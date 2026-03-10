@@ -1,0 +1,92 @@
+<div class="page-header">
+    <h1>Mis Entrenamientos</h1>
+    <button class="btn btn-primary" (click)="openWorkoutForm()">
+        <i class="fa-solid fa-plus"></i> Registrar Nuevo
+    </button>
+</div>
+
+<div class="filters">
+    <mat-button-toggle-group (change)="filterEntrenos($event.value)" name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle value="0" checked>Todos</mat-button-toggle>
+        @for (tipo of tiposActividadUsuario; track tipo.id) {
+        <mat-button-toggle [value]="tipo.id">{{tipo.nombre}}</mat-button-toggle>
+        }
+    </mat-button-toggle-group>
+</div>
+
+<div class="workouts-grid">
+    @for (workout of entrenos; track workout.id) {
+    <div class="card workout-premium-card" (click)="verDetalle(workout)">
+        <div class="card-glow-overlay" [ngClass]="getZonaClass(workout.zona_alcanzada)"></div>
+
+        <div class="card-top">
+            <div class="activity-strip" [ngClass]="workout.tipo_actividad_entreno.nombre.toLowerCase()">
+                <i [className]="workout.tipo_actividad_entreno.nombre | activityIcon"></i>
+                <span>{{ workout.tipo_actividad_entreno.nombre }}</span>
+            </div>
+            <div class="card-actions-overlay">
+                <button (click)="$event.stopPropagation(); editarEntreno(workout.id)" class="action-btn" title="Editar">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button (click)="$event.stopPropagation(); eliminarEntreno(workout.id)" class="action-btn delete"
+                    title="Eliminar">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="title-section">
+                <span class="date-label">{{ workout.fecha | date:'EEEE, d MMMM' }}</span>
+                <h3>{{ workout.titulo }}</h3>
+            </div>
+
+            <p class="description-snippet" *ngIf="workout.descripcion">{{ workout.descripcion }}</p>
+
+            <div class="stats-grid">
+                <div class="stat-pill">
+                    <div class="s-icon"><i class="fa-solid fa-route"></i></div>
+                    <div class="s-data">
+                        <span class="s-val">{{ workout.distancia_entreno }}</span>
+                        <span class="s-lbl">km</span>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <div class="s-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div class="s-data">
+                        <span class="s-val">{{ workout.tiempo_total_entreno }}</span>
+                        <span class="s-lbl">tiempo</span>
+                    </div>
+                </div>
+                @if (workout.ritmoMedio) {
+                <div class="stat-pill">
+                    <div class="s-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                    <div class="s-data">
+                        <span class="s-val">{{ workout.ritmoMedio }}</span>
+                        <span class="s-lbl">{{ getPaceUnit(workout.tipo_actividad_entreno.nombre) }}</span>
+                    </div>
+                </div>
+                }
+                @if (workout.desnivel_entreno) {
+                <div class="stat-pill">
+                    <div class="s-icon"><i class="fa-solid fa-caret-up"></i></div>
+                    <div class="s-data">
+                        <span class="s-val">{{ workout.desnivel_entreno }}</span>
+                        <span class="s-lbl">m</span>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="card-footer-premium" *ngIf="workout.zona_alcanzada && workout.zona_alcanzada > 0">
+            <div class="intensity-bar">
+                <span class="i-label">Esfuerzo Percibido</span>
+                <div class="zone-pill-premium" [ngClass]="getZonaClass(workout.zona_alcanzada)">
+                    Zona {{ workout.zona_alcanzada }}
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>

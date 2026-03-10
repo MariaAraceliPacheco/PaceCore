@@ -1,0 +1,40 @@
+<div class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <i class="fa-solid fa-bolt-lightning"></i>
+            </div>
+            <span class="logo-text">PaceCore</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+            <i class="fa-solid fa-table-cells-large icon"></i>
+            <span>Inicio</span>
+        </a>
+        <a routerLink="/dashboard/workouts" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-person-running icon"></i>
+            <span>Entrenamientos</span>
+        </a>
+        <a routerLink="/dashboard/statistics" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-chart-column icon"></i>
+            <span>Estadísticas</span>
+        </a>
+        <a routerLink="/dashboard/profile" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-user icon"></i>
+            <span>Perfil</span>
+        </a>
+        <a routerLink="/dashboard/explorar" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-compass icon"></i>
+            <span>Explorar</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a (click)="logout()" class="nav-item logout" style="cursor: pointer;">
+            <i class="fa-solid fa-right-from-bracket icon"></i>
+            <span>Cerrar Sesión</span>
+        </a>
+    </div>
+</div>

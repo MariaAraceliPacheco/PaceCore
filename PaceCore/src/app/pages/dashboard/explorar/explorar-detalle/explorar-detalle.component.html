@@ -1,0 +1,34 @@
+<div class="modal-container">
+    <div class="modal-header" [style.backgroundImage]="'url(' + data.imagen + ')'">
+        <div class="overlay">
+            <h1>{{ data.titulo }}</h1>
+            <p>{{ data.subtitulo }}</p>
+        </div>
+        <button class="close-btn" (click)="close()">×</button>
+    </div>
+
+    <div class="modal-content">
+        @for (section of data.contenido; track section.titulo) {
+        <section class="info-section">
+            <h3>{{ section.titulo }}</h3>
+            <p>{{ section.texto }}</p>
+            @if (section.items) {
+            <ul class="info-list">
+                @for (item of section.items; track item.label) {
+                <li>
+                    <span class="badge" [style.backgroundColor]="item.color">{{ item.label }}</span>
+                    <div class="item-desc">
+                        <strong>{{ item.titulo }}:</strong> {{ item.descripcion }}
+                    </div>
+                </li>
+                }
+            </ul>
+            }
+        </section>
+        }
+    </div>
+
+    <div class="modal-footer">
+        <button mat-flat-button color="primary" (click)="close()">Entendido</button>
+    </div>
+</div>

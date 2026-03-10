@@ -1,0 +1,128 @@
+<div class="profile-container" *ngIf="user$ | async as usuario">
+    <!-- Header Section -->
+    <div class="profile-header-premium card">
+        <div class="header-main">
+            <div class="avatar-large">{{ usuario.usuario.nombre.charAt(0) }}</div>
+            <div class="user-meta">
+                <span class="user-role">ATLETA PACECORE</span>
+                <h2>{{ usuario.usuario.nombre }}</h2>
+                <div class="user-badges">
+                    <span class="badge-pill">Premium</span>
+                    <span class="badge-pill" *ngIf="edad">{{ edad }} años</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-stats">
+            <div class="header-stat">
+                <span class="val">{{ peso || '--' }}</span>
+                <span class="lbl">kg</span>
+            </div>
+            <div class="header-divider"></div>
+            <div class="header-stat">
+                <span class="val">{{ altura || '--' }}</span>
+                <span class="lbl">cm</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-main-grid">
+        <!-- Left: Form -->
+        <div class="card form-card">
+            <div class="card-title-flex">
+                <i class="fa-solid fa-user-gear"></i>
+                <h3>Información Personal</h3>
+            </div>
+            <form class="profile-form" (ngSubmit)="saveProfile()">
+                <div class="form-grid">
+                    <div class="form-group grid-full">
+                        <label>Tu Motivación / Descripción</label>
+                        <textarea name="descripcion" rows="3" class="form-control" [(ngModel)]="descripcion"
+                            placeholder="¿Qué te mueve hoy?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" name="nombre" [(ngModel)]="nombre" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" name="email" [(ngModel)]="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Peso (kg)</label>
+                        <input type="number" name="peso" [(ngModel)]="peso" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Altura (cm)</label>
+                        <input type="number" name="altura" [(ngModel)]="altura" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Edad</label>
+                        <input type="number" name="edad" [(ngModel)]="edad" class="form-control">
+                    </div>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i> Actualizar Perfil
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right: Zones & Actions -->
+        <div class="card zones-card" [class.editing-zones]="isEditingZones">
+            <div class="card-title-flex">
+                <div class="title-left">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <h3>Zonas de FC</h3>
+                </div>
+                <button *ngIf="!isEditingZones" class="btn-icon" (click)="toggleEditZones()" title="Editar zonas">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+
+            <!-- Normal View (Compact Cards) -->
+            <div class="zones-compact-list" *ngIf="!isEditingZones">
+                <div class="zone-mini-item" *ngFor="let zona of zonas">
+                    <div class="z-badge" [attr.data-zone]="zona.numero_zona">{{ zona.numero_zona }}</div>
+                    <div class="z-info">
+                        <div class="z-top">
+                            <span class="z-name">{{ zona.nombre_zona }}</span>
+                            <span class="z-val">{{ zona.fc_minima }}-{{ zona.fc_maxima }} <small>ppm</small></span>
+                        </div>
+                        <p class="z-desc">{{ zona.descripcion }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Mode (Compact Table/Grid) -->
+            <div class="zones-table-edit" *ngIf="isEditingZones">
+                <div class="z-table-header">
+                    <span class="col-z">Z</span>
+                    <span class="col-name">Nombre</span>
+                    <span class="col-min">Mín</span>
+                    <span class="col-max">Máx</span>
+                </div>
+                <div class="z-table-body">
+                    <div class="z-row-edit" *ngFor="let zona of zonasEdit; let i = index">
+                        <div class="z-number-badge">{{ zona.numero_zona }}</div>
+                        <input type="text" [(ngModel)]="zona.nombre_zona" class="edit-input name" placeholder="Nombre">
+                        <input type="number" [(ngModel)]="zona.fc_minima" class="edit-input val">
+                        <input type="number" [(ngModel)]="zona.fc_maxima" class="edit-input val">
+                        <textarea [(ngModel)]="zona.descripcion" class="edit-input desc" rows="1"
+                            placeholder="Breve descripción..."></textarea>
+                    </div>
+                </div>
+                <div class="edit-actions">
+                    <button class="btn-cancel" (click)="cancelEditZones()">Cancelar</button>
+                    <button class="btn-confirm" (click)="saveZonasBulk()">Guardar Todo</button>
+                </div>
+            </div>
+
+            <div class="danger-section" *ngIf="!isEditingZones">
+                <button (click)="deleteProfile()" class="btn-danger-minimal">
+                    <i class="fa-solid fa-user-xmark"></i> Eliminar Cuenta
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

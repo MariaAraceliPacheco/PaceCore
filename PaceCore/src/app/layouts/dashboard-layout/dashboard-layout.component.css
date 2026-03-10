@@ -1,0 +1,16 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f8fafc;
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.sidebar-wrapper {
+    order: -1;
+    /* Sidebar on the left */
+}

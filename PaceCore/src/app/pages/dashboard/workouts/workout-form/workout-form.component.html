@@ -1,0 +1,145 @@
+<div class="modal-header">
+    <h2 mat-dialog-title>{{ entreno ? 'Editar Entrenamiento' : 'Registrar Nuevo Entrenamiento' }}</h2>
+    <button class="close-btn" (click)="onCancel()">×</button>
+</div>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="workoutForm" (ngSubmit)="onSubmit()" class="workout-form">
+        <!-- Basic Info Section -->
+        <div class="form-section">
+            <div class="form-row">
+                <mat-form-field appearance="outline" class="flex-2">
+                    <mat-label>Título del entrenamiento</mat-label>
+                    <input matInput formControlName="titulo" placeholder="Ej: Rodaje Suave">
+                    <mat-error *ngIf="workoutForm.get('titulo')?.hasError('required')">El título es
+                        obligatorio</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>Fecha y Hora</mat-label>
+                    <input matInput type="datetime-local" formControlName="fecha">
+                    <mat-error *ngIf="workoutForm.get('fecha')?.hasError('required')">La fecha es
+                        obligatoria</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>Tipo de actividad</mat-label>
+                    <mat-select formControlName="tipo_actividad_id">
+                        @for (type of activityTypes; track type.id) {
+                        <mat-option [value]="type.id">{{type.nombre}}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-error *ngIf="workoutForm.get('tipo_actividad_id')?.hasError('required')">Selecciona un
+                        tipo</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>Distancia (km)</mat-label>
+                    <input matInput type="number" formControlName="distancia" step="0.1"
+                        [readonly]="intervalos.length > 0">
+                    <mat-error *ngIf="workoutForm.get('distancia')?.hasError('required')">La distancia es
+                        obligatoria</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>Tiempo total (HH:MM:SS)</mat-label>
+                    <input matInput formControlName="tiempo_total" placeholder="00:00:00"
+                        [readonly]="intervalos.length > 0">
+                    <mat-error *ngIf="workoutForm.get('tiempo_total')?.hasError('required')">El tiempo es
+                        obligatorio</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>Desnivel (m)</mat-label>
+                    <input matInput type="number" formControlName="desnivel" [readonly]="intervalos.length > 0">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>FC Media (ppm)</mat-label>
+                    <input matInput type="number" formControlName="fcMedia" [readonly]="intervalos.length > 0">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>FC Máxima (ppm)</mat-label>
+                    <input matInput type="number" formControlName="fcMaxima" [readonly]="intervalos.length > 0">
+                </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descripción - Opcional</mat-label>
+                <textarea matInput formControlName="descripcion" rows="3"
+                    placeholder="¿Cómo te has sentido?"></textarea>
+            </mat-form-field>
+        </div>
+
+        <!-- Intervals Section -->
+        <div class="intervals-section">
+            <div class="section-header">
+                <h3>Intervalos / Series</h3>
+                <button type="button" class="btn btn-outline btn-sm" (click)="addInterval()">
+                    <span class="plus-icon">+</span> Agregar intervalo
+                </button>
+            </div>
+
+            <div formArrayName="intervalos" class="intervals-list">
+                @for (interval of intervalos.controls; track $index; let i = $index) {
+                <div [formGroupName]="i" class="interval-item card">
+                    <div class="interval-header">
+                        <h4>Intervalo #{{ i + 1 }}</h4>
+                        <button type="button" class="remove-btn" (click)="removeInterval(i)">Eliminar</button>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="flex-2">
+                            <mat-label>Tipo</mat-label>
+                            <mat-select formControlName="tipo_actividad_id">
+                                @for (type of activityTypes; track type.id) {
+                                <mat-option [value]="type.id">{{type.nombre}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="flex-1">
+                            <mat-label>Distancia (km)</mat-label>
+                            <input matInput type="number" formControlName="distancia" step="0.1">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="flex-1">
+                            <mat-label>Duración (HH:MM:SS)</mat-label>
+                            <input matInput formControlName="duracion" placeholder="00:00:00">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="flex-1">
+                            <mat-label>Desnivel (m)</mat-label>
+                            <input matInput type="number" formControlName="desnivel">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="flex-1">
+                            <mat-label>FC Media</mat-label>
+                            <input matInput type="number" formControlName="fcMedia">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="flex-1">
+                            <mat-label>FC Máxima</mat-label>
+                            <input matInput type="number" formControlName="fcMaxima">
+                        </mat-form-field>
+                    </div>
+                </div>
+                }
+
+                @if (intervalos.length === 0) {
+                <div class="empty-intervals">
+                    <p>No has añadido intervalos todavía.</p>
+                </div>
+                }
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="modal-footer">
+    <button class="btn btn-outline" (click)="onCancel()">Cancelar</button>
+    <button class="btn btn-primary" (click)="onSubmit()">Guardar Entrenamiento</button>
+</mat-dialog-actions>

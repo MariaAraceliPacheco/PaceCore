@@ -1,0 +1,67 @@
+<div class="overview-header">
+    <div class="user-info" *ngIf="user$ | async as usuario">
+        <h1>Buenos días, {{ usuario.usuario.nombre }}</h1>
+        <p>Aquí tienes un resumen de tu actividad reciente.</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="card stat-card">
+        <h3>Distancia Total</h3>
+        <div class="value">{{ estadisticas.distanciaTotalKm | number:'1.2-2' }} <span class="unit">km</span></div>
+        <div class="trend" [ngClass]="distanciaTrend.isUp ? 'up' : 'down'">
+            {{ distanciaTrend.isUp ? '▲' : '▼' }} {{ distanciaTrend.label }}
+        </div>
+    </div>
+    <div class="card stat-card">
+        <h3>Ritmo Medio</h3>
+        <div class="value">{{ estadisticas.ritmoMedioRunning | ritmo }} <span class="unit">/km</span></div>
+        @if (estadisticas.ritmoMedioRunning > 0) {
+        <div class="trend" [ngClass]="ritmoTrend.isUp ? 'up' : 'down'">
+            {{ ritmoTrend.isUp ? '▲' : '▼' }} {{ ritmoTrend.label }}
+        </div>
+        } @else {
+        <div class="empty-state-msg">
+            Empieza a correr para ver tu ritmo
+        </div>
+        }
+    </div>
+    <div class="card stat-card">
+        <h3>Tiempo Total</h3>
+        <div class="value">{{ estadisticas.tiempoTotal | formatSeconds }}</div>
+        <div class="trend" [ngClass]="tiempoTrend.isUp ? 'up' : 'down'">
+            {{ tiempoTrend.isUp ? '▲' : '▼' }} {{ tiempoTrend.label }}
+        </div>
+    </div>
+</div>
+
+<div class="recomendaciones">
+    <app-recomendacion></app-recomendacion>
+</div>
+
+<div class="section-header">
+    <h2>Entrenamientos Recientes</h2>
+    <a routerLink="workouts" class="btn-link">Ver todos</a>
+</div>
+
+<div class="workouts-list">
+    @for (workout of recentWorkouts; track workout.id) {
+    <div style="cursor: pointer;" class="card workout-card" (click)="verDetalle(workout)">
+        <div class="header-icon">
+            <i [className]="workout.tipo_actividad_entreno.nombre | activityIcon"></i>
+        </div>
+        <div class="workout-details">
+            <h4>{{ workout.titulo }}</h4>
+            <div class="workout-meta">
+                <span>📅 {{ workout.fecha | date:'d MMM' }}</span>
+                <span>📏 {{ workout.distancia_entreno }} km</span>
+                <span>⏱️ {{ workout.ritmoMedio }} {{ getPaceUnit(workout.tipo_actividad_entreno.nombre)
+                    }}</span>
+            </div>
+        </div>
+        <div class="workout-actions">
+            <button class="btn-icon" (click)="$event.stopPropagation(); editarEntreno(workout.id)">✏️</button>
+        </div>
+    </div>
+    }
+</div>

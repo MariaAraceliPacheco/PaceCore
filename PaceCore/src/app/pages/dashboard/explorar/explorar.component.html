@@ -1,0 +1,24 @@
+<div class="page-header">
+    <h1>Explorar PaceCore</h1>
+    <p>Aprende, optimiza tus entrenamientos y alcanza tus objetivos con base científica.</p>
+</div>
+
+<div class="explore-grid">
+    @for (card of cards; track card.id) {
+    <div class="explore-card" (click)="openDetail(card)">
+        <div class="card-image" [style.backgroundImage]="'url(' + card.imagen + ')'">
+            <div class="image-overlay">
+                <span class="read-more">Leer más <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+        </div>
+        <div class="card-content">
+            <h3>{{ card.titulo }}</h3>
+            <p>{{ card.descripcion }}</p>
+            <div class="card-footer">
+                <span class="category">EDUCACIÓN</span>
+                <span class="badge">5 min</span>
+            </div>
+        </div>
+    </div>
+    }
+</div>

@@ -1,0 +1,14 @@
+<header class="header">
+  <div class="container header-content">
+    <a routerLink="/" class="logo">
+      <!-- Assuming the logo is copied to public/logo.png, in Angular it is served at /logo.png -->
+      <img src="PaceCoreLogo.png" alt="PaceCore Logo">
+      <span>PaceCore</span>
+    </a>
+
+    <nav class="nav-links">
+      <a routerLink="/" fragment="about" (click)="scrollToAbout()">Que es PaceCore</a> <!-- Link to scroll down -->
+      <a routerLink="/login" class="btn btn-primary btn-sm">Iniciar Sesión</a>
+    </nav>
+  </div>
+</header>

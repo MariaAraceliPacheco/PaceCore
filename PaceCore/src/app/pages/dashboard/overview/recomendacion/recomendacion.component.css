@@ -1,0 +1,319 @@
+/* Zone Colors Definition */
+:root {
+    --zone-1: #328bdfff;
+    --zone-1-bg: rgba(50, 139, 223, 0.15);
+    --zone-2: #30d31aff;
+    --zone-2-bg: rgba(48, 211, 26, 0.15);
+    --zone-3: #ffd900ff;
+    --zone-3-bg: rgba(255, 217, 0, 0.15);
+    --zone-4: #ff7e56ff;
+    --zone-4-bg: rgba(255, 126, 86, 0.15);
+    --zone-5: #ff0000ff;
+    --zone-5-bg: rgba(255, 0, 0, 0.15);
+}
+
+:host {
+    display: block;
+    margin-bottom: 24px;
+}
+
+.recommendation-card {
+    border-radius: 20px;
+    border-left: 6px solid #fc4c02;
+    background: white;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    /* Removed max-width to let it fill container if needed, or keep it if desired */
+}
+
+/* Status Colors */
+.recommendation-card.accepted,
+.recommendation-card.success {
+    border-left-color: #30d31aff;
+}
+
+.recommendation-card.success {
+    background: linear-gradient(to right, #ffffff, #f0fdf4);
+}
+
+/* Header & Title */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+.header-left .badge {
+    background: #ecfdf5;
+    /* Light green/mint background */
+    color: #10b981;
+    /* Green text */
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #111827;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+/* Body & Description */
+.card-body {
+    position: relative;
+    z-index: 2;
+}
+
+.description {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    font-size: 1rem;
+    max-width: 70%;
+    /* Limit width to leave room for buttons if they were on the right */
+}
+
+/* Actions - Now inline effectively floating right or absolute */
+.card-actions-inline {
+    display: flex;
+    gap: 12px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    align-items: center;
+}
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn-aceptar {
+    background: #ff5722;
+    /* Orange */
+    color: white;
+}
+
+.btn-aceptar:hover {
+    background: #f44336;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 87, 34, 0.3);
+}
+
+.btn-completar {
+    background: #25d366;
+    /* Green */
+    color: white;
+}
+
+.btn-completar:hover {
+    background: #20bd5a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(37, 211, 102, 0.3);
+}
+
+.btn-rechazar {
+    background: transparent;
+    color: #9ca3af;
+    box-shadow: none;
+    padding: 10px;
+}
+
+.btn-rechazar:hover {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.btn-pdf {
+    background: #f3f4f6;
+    color: #4b5563;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.btn-pdf:hover {
+    background: #e5e7eb;
+    color: #ef4444;
+    transform: scale(1.1);
+}
+
+/* Blocks Structure - Horizontal Layout */
+.workout-structure {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.block-card {
+    background: #f9fafb;
+    border: 1px solid #f3f4f6;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+
+.block-card:hover {
+    background: white;
+    border-color: #e5e7eb;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.block-zone-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.block-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.fase {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.block-title {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.block-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Right align duration and pace */
+    gap: 4px;
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.meta-item i {
+    color: #9ca3af;
+    font-size: 0.9em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .recommendation-card {
+        padding: 20px;
+    }
+
+    .card-actions-inline {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 20px;
+        justify-content: flex-start;
+    }
+
+    .description {
+        max-width: 100%;
+    }
+
+    .workout-structure {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Loading State */
+.loading-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    min-height: 200px;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #fc4c02;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-badge.accepted {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.status-badge.success {
+    background: #f0fdf4;
+    color: #16a34a;
+}

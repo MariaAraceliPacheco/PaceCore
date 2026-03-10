@@ -1,0 +1,85 @@
+@if (loading) {
+<div class="card loading-card">
+    <div class="spinner"></div>
+    <p>Analizando tu rendimiento y preparando algo especial...</p>
+</div>
+} @else if (recomendacion) {
+<div class="card recommendation-card" [class.success]="recomendacion.estado === 'COMPLETADO'"
+    [class.accepted]="recomendacion.estado === 'ACEPTADO'"
+    [style.borderLeftColor]="recomendacion.estado === 'SUGERIDO' ? intensityColor : ''">
+
+    <div class="card-header">
+        <div class="header-left">
+            <span class="badge" [style.color]="intensityColor" [style.backgroundColor]="intensityColor + '15'">
+                RECOMENDACIÓN DEL DÍA - Z{{ maxZone }}
+            </span>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <h2>{{ recomendacion.titulo }}</h2>
+                <button class="btn-pdf" (click)="descargarPDF()" title="Descargar entrenamiento en PDF">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Action Buttons in Header for desktop if needed, or keep at bottom -->
+    </div>
+
+    <div class="card-body">
+        <p class="description">{{ recomendacion.descripcion }}</p>
+
+        <div class="card-actions-inline">
+            @if (recomendacion.estado == 'SUGERIDO') {
+            <button class="btn-aceptar" (click)="aceptar()">
+                <i class="fa-solid fa-calendar-check"></i> Planificar
+            </button>
+            <button class="btn-completar" (click)="completar()">
+                <i class="fa-solid fa-circle-check"></i> Hecho
+            </button>
+            <button class="btn-rechazar" (click)="rechazar()" title="No hoy">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            } @else if (recomendacion.estado == 'ACEPTADO') {
+            <div class="status-badge accepted">
+                <i class="fa-solid fa-calendar-check"></i> Planificado
+            </div>
+            <button class="btn-completar" (click)="completar()">
+                <i class="fa-solid fa-check"></i> Hecho
+            </button>
+            } @else if (recomendacion.estado == 'COMPLETADO') {
+            <div class="status-badge success">
+                <i class="fa-solid fa-trophy"></i> Completado
+            </div>
+            } @else if (recomendacion.estado == 'RECHAZADO') {
+            <div class="status-badge rejected" style="color: red; background-color: rgba(255, 0, 0, 0.137);">
+                <i class="fa-solid fa-xmark"></i> Rechazado
+            </div>
+            }
+        </div>
+
+        <div class="workout-structure">
+            @for (bloque of recomendacion.bloques; track bloque.descripcion) {
+            <div class="block-card">
+                <div class="block-zone-circle" [style.backgroundColor]="'var(--zone-' + bloque.zonaObjetivo + '-bg)'"
+                    [style.color]="'var(--zone-' + bloque.zonaObjetivo + ')'">
+                    <span style="padding: 10px; border-radius: 10px;" [style.color]="intensityColor"
+                        [style.backgroundColor]="intensityColor + '15'">Z{{ bloque.zonaObjetivo }}</span>
+                </div>
+                <div class="block-details">
+                    <span class="fase">{{ bloque.fase | titlecase }}</span>
+                    <span class="block-title">{{ bloque.descripcion }}</span>
+                </div>
+                <div class="block-meta">
+                    <div class="meta-item">
+                        <i class="fa-regular fa-clock"></i> {{ bloque.duracionSegundos | formatSeconds }}
+                    </div>
+                    @if (bloque.ritmoObjetivo) {
+                    <div class="meta-item pace">
+                        <i class="fa-solid fa-gauge-high"></i> {{ bloque.ritmoObjetivo | ritmo }}
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+}

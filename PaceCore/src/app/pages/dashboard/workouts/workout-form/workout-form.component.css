@@ -1,0 +1,173 @@
+:host {
+    display: block;
+    background: white;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--dark);
+    font-weight: 700;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.workout-form {
+    padding: 1.5rem;
+}
+
+.form-section {
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.flex-1 {
+    flex: 1;
+    min-width: 0;
+}
+
+.flex-2 {
+    flex: 2;
+    min-width: 0;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.intervals-section {
+    margin-top: 1rem;
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #eee;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.intervals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.interval-item {
+    padding: 1.25rem;
+    border: 1px solid #eee;
+    background: white !important;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.interval-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.interval-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.remove-btn {
+    background: rgba(239, 68, 68, 0.1);
+    border: none;
+    color: #ef4444;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.remove-btn:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.empty-intervals {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-muted);
+    background: #fff;
+    border: 2px dashed #eee;
+    border-radius: 8px;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+mat-dialog-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-height: 65vh;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+    /* Subscript sizing dynamic fallback */
+}

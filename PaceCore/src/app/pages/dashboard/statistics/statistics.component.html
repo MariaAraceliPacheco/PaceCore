@@ -1,0 +1,159 @@
+<div class="page-header">
+    <h1>Estadísticas de Rendimiento</h1>
+</div>
+
+<div class="stats-overview">
+    <div class="stat-box primary">
+        <div class="stat-icon"><i class="fa-solid fa-route"></i></div>
+        <div class="stat-content">
+            <h3>Distancia Total</h3>
+            <div class="number">{{ estadisticas.distanciaTotalKm | number:'1.1-1' }} <small>km</small></div>
+        </div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon orange"><i class="fa-solid fa-mountain"></i></div>
+        <div class="stat-content">
+            <h3>Desnivel</h3>
+            <div class="number">{{ estadisticas.desnivelTotal }} <small>m</small></div>
+        </div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon red"><i class="fa-solid fa-fire"></i></div>
+        <div class="stat-content">
+            <h3>Calorías</h3>
+            <div class="number">{{ estadisticas.caloriasTotales | number:'1.0-0' }} <small>kcal</small></div>
+        </div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon blue"><i class="fa-solid fa-bolt"></i></div>
+        <div class="stat-content">
+            <h3>Ritmo Medio</h3>
+            <div class="number">{{ estadisticas.ritmoMedioRunning | ritmo }} <small>min/km</small></div>
+        </div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon yellow"><i class="fa-solid fa-person-biking"></i></div>
+        <div class="stat-content">
+            <h3>Vel. Bici</h3>
+            <div class="number">{{ estadisticas.velocidadMediaBici | number:'1.1-1' }} <small>km/h</small></div>
+        </div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon purple"><i class="fa-solid fa-clock"></i></div>
+        <div class="stat-content">
+            <h3>Tiempo</h3>
+            <div class="number">{{ estadisticas.tiempoTotal | formatSeconds }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="charts-main-grid">
+    <!-- Volumen Semanal (Main Focus) -->
+    <div class="card chart-card volume-card">
+        <div class="card-header">
+            <div class="header-left">
+                <h3>Volumen Semanal</h3>
+                <div class="week-controls">
+                    <button class="week-nav-btn" (click)="previousWeek()">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <span class="week-label">{{ weekLabel }}</span>
+                    <button class="week-nav-btn" (click)="nextWeek()" [disabled]="isCurrentWeek">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="header-right">
+                <select class="activity-filter" [ngModel]="selectedActivityId"
+                    (ngModelChange)="setActivityFilter($event)">
+                    <option value="all">Todas</option>
+                    @for (type of tiposActividad; track type.id) {
+                    <option [value]="type.id">{{ type.nombre }}</option>
+                    }
+                </select>
+                <div class="stat-pill">
+                    <span>{{ totalWeeklyKm }} <small>km</small></span>
+                </div>
+            </div>
+        </div>
+        <div class="chart-container-wrapper">
+            <canvas #volumeChart></canvas>
+        </div>
+    </div>
+
+    <div class="secondary-stats-column">
+        <!-- Marcas Personales (Compact Grid) -->
+        <div class="card pb-card">
+            <div class="card-header-simple">
+                <h3>Marcas Personales</h3>
+                <i class="fa-solid fa-trophy trophy-main"></i>
+            </div>
+            <div class="pb-grid">
+                <div class="pb-mini-card">
+                    <span class="pb-label">5K</span>
+                    <span class="pb-time">{{ estadisticas.marca5k || '--:--' }}</span>
+                </div>
+                <div class="pb-mini-card">
+                    <span class="pb-label">10K</span>
+                    <span class="pb-time">{{ estadisticas.marca10k || '--:--' }}</span>
+                </div>
+                <div class="pb-mini-card">
+                    <span class="pb-label">21K</span>
+                    <span class="pb-time">{{ estadisticas.marca21k || '--:--' }}</span>
+                </div>
+                <div class="pb-mini-card">
+                    <span class="pb-label">42K</span>
+                    <span class="pb-time">{{ estadisticas.marca42k || '--:--' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Heart Rate Stats -->
+        <div class="card hr-summary-card">
+            <h3>Corazón (Semana)</h3>
+            <div class="hr-stats-grid">
+                <div class="hr-stat-item">
+                    <span class="hr-label">Media</span>
+                    <span class="hr-value">{{ weeklyFcMedia > 0 ? weeklyFcMedia : '--' }} <small>lpm</small></span>
+                </div>
+                <div class="hr-stat-item">
+                    <span class="hr-label">Máxima</span>
+                    <span class="hr-value maxima">{{ weeklyFcMaxima > 0 ? weeklyFcMaxima : '--' }}
+                        <small>lpm</small></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="charts-secondary-grid">
+    <div class="card">
+        <div class="card-header">
+            <h3>Distribución por Zonas</h3>
+            <div class="week-controls-compact">
+                <button class="icon-btn" (click)="previousWeekZonas()"><i class="fa-solid fa-chevron-left"></i></button>
+                <span>{{ weekLabelZonas }}</span>
+                <button class="icon-btn" (click)="nextWeekZonas()" [disabled]="isCurrentWeekZonas()"><i
+                        class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="chart-container-wrapper-small">
+            <canvas #chartZonas></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Frecuencia Mensual</h3>
+            <div class="week-controls-compact">
+                <button class="icon-btn" (click)="previousMonth()"><i class="fa-solid fa-chevron-left"></i></button>
+                <span>{{ monthLabel | titlecase }}</span>
+                <button class="icon-btn" (click)="nextMonth()" [disabled]="isCurrentMonth"><i
+                        class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="chart-container-wrapper-small">
+            <canvas #chartConteoActividades></canvas>
+        </div>
+    </div>
+</div>

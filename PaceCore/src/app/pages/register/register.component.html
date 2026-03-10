@@ -1,0 +1,82 @@
+<div class="auth-container">
+    <div class="auth-card">
+
+        <!-- STEP 1: Basic Info -->
+        <div *ngIf="step === 1">
+            <div class="auth-header">
+                <h2>Únete a PaceCore</h2>
+                <p>Crea tu cuenta y empieza a mejorar</p>
+            </div>
+
+            <form (submit)="onSubmit($event)">
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" class="form-control" placeholder="Juan Pérez" [(ngModel)]="name"
+                        name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="tu@email.com" [(ngModel)]="email"
+                        name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••"
+                        [(ngModel)]="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar Contraseña</label>
+                    <input type="password" id="confirm-password" class="form-control" placeholder="••••••••"
+                        [(ngModel)]="confirmPassword" name="confirmPassword" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Continuar</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>¿Ya tienes cuenta? <a routerLink="/login">Inicia Sesión</a></p>
+            </div>
+        </div>
+
+        <!-- STEP 2: Profile Details -->
+        <div *ngIf="step === 2">
+            <div class="auth-header">
+                <h2>Bienvenido, {{ name }}!</h2>
+                <p>Cuéntanos un poco más sobre ti</p>
+            </div>
+
+            <form (submit)="onSubmit($event)">
+                <div class="form-row" style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="weight">Peso (kg)</label>
+                        <input type="number" id="weight" class="form-control" placeholder="70" [(ngModel)]="weight"
+                            name="weight" required>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label for="height">Altura (cm)</label>
+                        <input type="number" id="height" class="form-control" placeholder="175" [(ngModel)]="height"
+                            name="height" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="age">Edad</label>
+                        <input type="number" id="age" class="form-control" placeholder="25" [(ngModel)]="age"
+                            name="age" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descripción (Opcional)</label>
+                    <textarea id="description" class="form-control" rows="3" style="resize: none;"
+                        placeholder="Me gusta correr..." [(ngModel)]="description" name="description"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Finalizar Registro</button>
+            </form>
+        </div>
+
+    </div>
+</div>

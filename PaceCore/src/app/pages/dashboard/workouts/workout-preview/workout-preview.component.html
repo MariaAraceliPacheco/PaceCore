@@ -1,0 +1,109 @@
+<div class="preview-container">
+    <div class="preview-header">
+        <div class="title-group">
+            <span class="date">{{ entreno.fecha | date:'EEEE, d MMMM yyyy HH:mm' }}</span>
+            <h2>{{ entreno.titulo }}</h2>
+        </div>
+        <div class="header-right">
+            <span *ngIf="entreno.zona_alcanzada && entreno.zona_alcanzada > 0" class="zone-badge"
+                [ngClass]="getZonaClass(entreno.zona_alcanzada)">
+                Zona {{ entreno.zona_alcanzada }}
+            </span>
+            <div class="activity-badge">
+                <i [className]="entreno.tipo_actividad_entreno.nombre | activityIcon"></i>
+                <span>{{ entreno.tipo_actividad_entreno.nombre }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-content">
+        <div class="main-stats">
+            <div class="stat-item">
+                <span class="label">Distancia</span>
+                <span class="value">{{ entreno.distancia_entreno }} <small>km</small></span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Tiempo</span>
+                <span class="value">{{ formatTime(entreno.tiempo_total_entreno) }}</span>
+            </div>
+            <div class="stat-item" *ngIf="entreno.desnivel_entreno">
+                <span class="label">Desnivel</span>
+                <span class="value">{{ entreno.desnivel_entreno }} <small>m</small></span>
+            </div>
+            <div class="stat-item" *ngIf="entreno.fcMedia">
+                <span class="label">FC Media</span>
+                <span class="value">{{ entreno.fcMedia }} <small>ppm</small></span>
+            </div>
+            <div class="stat-item" *ngIf="entreno.fcMaxima">
+                <span class="label">FC Máxima</span>
+                <span class="value">{{ entreno.fcMaxima }} <small>ppm</small></span>
+            </div>
+            <div class="stat-item" *ngIf="entreno.ritmoMedio">
+                <span class="label">Ritmo Medio</span>
+                <span class="value">{{ entreno.ritmoMedio }} <small>{{ getPaceUnit(entreno.tipo_actividad_entreno.nombre) }}</small></span>
+            </div>
+        </div>
+
+        <div class="description-section" *ngIf="entreno.descripcion">
+            <h3>Descripción</h3>
+            <p>{{ entreno.descripcion }}</p>
+        </div>
+
+        <div class="intervals-section" *ngIf="entreno.intervalos && entreno.intervalos.length > 0">
+            <h3>Sesión de intervalos ({{ entreno.intervalos.length }})</h3>
+            <div class="intervals-list">
+                <div class="interval-card" *ngFor="let interval of entreno.intervalos; let i = index">
+                    <div class="interval-number">{{ i + 1 }}</div>
+                    <div class="interval-details">
+                        <div class="detail">
+                            <span class="d-label">Actividad</span>
+                            <span class="d-value">{{ interval.tipo_actividad_id?.nombre || 'General' }}</span>
+                        </div>
+                        <div class="detail">
+                            <span class="d-label">Distancia</span>
+                            <span class="d-value">{{ interval.distancia }} km</span>
+                        </div>
+                        <div class="detail">
+                            <span class="d-label">Duración</span>
+                            <span class="d-value">{{ interval.duracion }}</span>
+                        </div>
+                        <div class="detail" *ngIf="interval.desnivel">
+                            <span class="d-label">Desnivel</span>
+                            <span class="d-value">{{ interval.desnivel }} m</span>
+                        </div>
+                        <div class="detail" *ngIf="interval.fcMedia">
+                            <span class="d-label">FC Media</span>
+                            <span class="d-value">{{ interval.fcMedia }} ppm</span>
+                        </div>
+                        <div class="detail" *ngIf="interval.fcMaxima">
+                            <span class="d-label">FC Máxima</span>
+                            <span class="d-value">{{ interval.fcMaxima }} ppm</span>
+                        </div>
+                        <div class="detail" *ngIf="interval.zona_alcanzada && interval.zona_alcanzada > 0">
+                            <span class="d-label">Zona</span>
+                            <span class="zone-badge" [ngClass]="getZonaClass(interval.zona_alcanzada)">
+                                Z{{ interval.zona_alcanzada }}
+                            </span>
+                        </div>
+                        <div class="detail" *ngIf="interval.ritmoMedio">
+                            <span class="d-label">Ritmo Medio</span>
+                            <span class="d-value">{{ interval.ritmoMedio  | ritmo}} <small>{{ getPaceUnit(interval.tipo_actividad_id.nombre) }}</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-actions">
+        <div class="left-actions">
+            <button class="btn-danger-outline" (click)="onDelete()">
+                <i class="fa-solid fa-trash-can"></i> Eliminar
+            </button>
+            <button class="btn-secondary-outline" (click)="onEdit()">
+                <i class="fa-solid fa-pen-to-square"></i> Modificar
+            </button>
+        </div>
+        <button class="btn btn-primary" (click)="onClose()">Cerrar</button>
+    </div>
+</div>
