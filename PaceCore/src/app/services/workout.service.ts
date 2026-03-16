@@ -49,32 +49,20 @@ export class WorkoutService {
         return this.http.get<TipoActividad[]>('/actividades');
     }
 
-    addWorkout(workout: EntrenoCreate): void {
-        this.crearEntreno(workout).subscribe({
-            next: (savedWorkout) => {
-                console.log('Workout added successfully:', savedWorkout);
-                this.refreshEntrenos(); // Recargar la lista automáticamente
-            },
-            error: (error) => {
-                console.error('Error adding workout:', error);
-            }
-        });
+    addWorkout(workout: EntrenoCreate): Observable<Entreno> {
+        return this.crearEntreno(workout).pipe(
+            tap(() => this.refreshEntrenos())
+        );
     }
 
     crearEntreno(entreno: EntrenoCreate): Observable<Entreno> {
         return this.http.post<Entreno>(this.apiUrl, entreno);
     }
 
-    updateWorkout(id: number, entreno: EntrenoCreate): void {
-        this.http.put<Entreno>(this.apiUrl + "/" + id, entreno).subscribe({
-            next: (savedWorkout) => {
-                console.log('Workout updated successfully:', savedWorkout);
-                this.refreshEntrenos();
-            },
-            error: (error) => {
-                console.error('Error updating workout:', error);
-            }
-        });
+    updateWorkout(id: number, entreno: EntrenoCreate): Observable<Entreno> {
+        return this.http.put<Entreno>(this.apiUrl + "/" + id, entreno).pipe(
+            tap(() => this.refreshEntrenos())
+        );
     }
 
     getEntrenos(tipoActividadId?: number): Observable<Entreno[]> {

@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -316,7 +318,7 @@ public class EntrenoService {
 
 		// 2. Actualizar datos básicos
 		en.setTipoactividad(ta);
-		en.setFecha(dto.getFecha());
+		en.setFecha(Timestamp.valueOf(dto.getFecha()));
 		en.setTitulo(dto.getTitulo());
 		en.setDescripcion(dto.getDescripcion()); // Si el DTO trae null, se pondrá null.
 
@@ -365,7 +367,7 @@ public class EntrenoService {
 		response.setDistancia(nuevoE.getDistancia());
 		response.setFcMaxima(nuevoE.getFcMaxima());
 		response.setFcMedia(nuevoE.getFcMedia());
-		response.setFecha(nuevoE.getFecha());
+		response.setFecha(nuevoE.getFecha().toLocalDateTime());
 
 		List<IntervaloInsertDTO> listaIidto = new ArrayList<IntervaloInsertDTO>();
 		for (Intervalo i : nuevoE.getIntervalos()) {

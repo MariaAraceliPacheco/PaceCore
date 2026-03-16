@@ -38,7 +38,7 @@ public class AuthController {
 	@ApiResponse(responseCode = "200", description = "Login exitoso")
 	@ApiResponse(responseCode = "401", description = "Credenciales inválidas")
 	@PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> login(@RequestBody LoginDTO dto) {
+	public ResponseEntity<?> login(@RequestBody @Valid LoginDTO dto) {
 		LoginResponse u = servicio.login(dto);
 		return ResponseEntity.ok(u);
 	}

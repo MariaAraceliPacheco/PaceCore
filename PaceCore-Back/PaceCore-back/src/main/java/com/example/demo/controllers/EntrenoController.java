@@ -23,6 +23,7 @@ import com.example.demo.services.EntrenoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/entrenos")
@@ -38,14 +39,14 @@ public class EntrenoController {
 	@Operation(summary = "Crear entrenamiento", description = "Registra una nueva sesión de entrenamiento completa con sus intervalos")
 	@ApiResponse(responseCode = "200", description = "Entrenamiento creado")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Entreno crear(@RequestBody EntrenoCreateDTO e) {
+	public Entreno crear(@RequestBody @Valid EntrenoCreateDTO e) {
 		return service.crearEntrenoCompleto(e);
 	}
 
 	@Operation(summary = "Modificar entrenamiento", description = "Actualiza los datos de un entrenamiento existente")
 	@ApiResponse(responseCode = "200", description = "Entrenamiento actualizado")
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> modificarEntreno(@RequestBody EntrenoUpdateDTO e, @PathVariable int id) {
+	public ResponseEntity<?> modificarEntreno(@RequestBody @Valid EntrenoUpdateDTO e, @PathVariable int id) {
 		EntrenoUpdateDTO response = service.modificarEntreno(e, id);
 		return ResponseEntity.ok(response);
 	}

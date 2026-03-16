@@ -1,7 +1,8 @@
 package com.example.demo.dto.entrenos;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -9,37 +10,66 @@ import com.example.demo.dto.intervalos.IntervaloInsertDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Schema(description = "Datos para actualizar un entrenamiento existente")
 public class EntrenoUpdateDTO {
 
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	private Timestamp fecha;
+	@NotNull(message = "La fecha no puede ser null")
+	private LocalDateTime fecha;
+
+	@NotNull(message = "La distancia no puede ser null")
+	@DecimalMin("0")
+	@DecimalMax("99999")
 	@Schema(description = "Nueva distancia", example = "10.0")
 	private BigDecimal distancia;
 
+	@NotNull(message = "El tiempo total no puede ser null")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	@Schema(type = "string", example = "00:00:00")
 	private LocalTime tiempo_total;
+
+	@NotNull
 	@Schema(description = "ID del tipo de actividad", example = "1")
 	private int tipo_actividad_id;
 
+	@Size(min = 0, max = 255, message = "La descripcion debe tener entre 0 y 255 caracteres")
 	@Schema(description = "Nueva descripción", example = "Salida matinal")
 	private String descripcion;
+
+	@NotBlank(message = "El titulo no puede estar vacio")
+	@Size(min = 1, max = 124)
 	@Schema(description = "Nuevo título", example = "Rodaje regenerativo")
 	private String titulo;
+
+	@DecimalMax("99999")
 	@Schema(description = "Nuevo desnivel", example = "100.0")
 	private BigDecimal desnivel;
+
+	@Min(0)
+	@Max(250)
 	@Schema(description = "Frecuencia cardíaca media", example = "140")
 	private Integer fcMedia;
+
+	@Min(0)
+	@Max(250)
 	@Schema(description = "Frecuencia cardíaca máxima", example = "165")
 	private Integer fcMaxima;
+
+	// esto se calcula automaticamente en el servicio
 	@Schema(description = "Zona de entrenamiento máxima alcanzada", example = "3")
 	private Integer zonaAlcanzada;
 
 	private List<IntervaloInsertDTO> intervalos;
 
-	public EntrenoUpdateDTO(Timestamp fecha, BigDecimal distancia, LocalTime tiempo_total, int tipo_actividad_id,
+	public EntrenoUpdateDTO(LocalDateTime fecha, BigDecimal distancia, LocalTime tiempo_total, int tipo_actividad_id,
 			String descripcion, String titulo, BigDecimal desnivel, Integer fcMedia, Integer fcMaxima,
 			List<IntervaloInsertDTO> intervalos, Integer zonaAlcanzada) {
 		super();
@@ -116,11 +146,11 @@ public class EntrenoUpdateDTO {
 		this.desnivel = desnivel;
 	}
 
-	public Timestamp getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Timestamp fecha) {
+	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 
