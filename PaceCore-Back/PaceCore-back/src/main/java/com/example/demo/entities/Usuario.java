@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -47,6 +49,7 @@ public class Usuario implements Serializable {
 	// bi-directional many-to-one association to Entreno
 	@OneToMany(mappedBy = "usuario")
 	@JsonIgnore // Spring no devolverá este atributo cuando se haga un GET del usuario
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Entreno> entrenos;
 
 	// un usuario puede tener varias zonas de entrenamiento (5)
@@ -55,9 +58,15 @@ public class Usuario implements Serializable {
 	// como se unen estas dos tablas (el nombre de columna fk) está en el atributo
 	// llamado "usuario" de la entidad ZonasUsuario
 	@OneToMany(mappedBy = "usuario")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<ZonasUsuario> zonas;
 
+	@OneToMany(mappedBy = "usuario")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private List<EntrenamientoSugerido> entrenamientoSugerido;
+	
 	public Usuario() {
 	}
 

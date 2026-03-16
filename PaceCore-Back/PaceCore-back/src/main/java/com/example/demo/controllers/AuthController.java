@@ -20,6 +20,7 @@ import com.example.demo.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -46,7 +47,9 @@ public class AuthController {
 	@ApiResponse(responseCode = "200", description = "Usuario registrado correctamente")
 	@ApiResponse(responseCode = "500", description = "Error interno al procesar el registro")
 	@PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> register(@RequestBody UsuarioInsertDTO dto) {
+	public ResponseEntity<?> register(@Valid @RequestBody UsuarioInsertDTO dto) {
+		// importante usar la anotacion @Valid para que funcione la validacion de los
+		// DTOs
 		try {
 			Usuario u = servicio.register(dto);
 			UsuarioResponseDTO e = new UsuarioResponseDTO();

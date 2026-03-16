@@ -23,6 +23,7 @@ import com.example.demo.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -38,7 +39,7 @@ public class UsuarioController {
 	@Operation(summary = "Crear usuario", description = "Registra un nuevo usuario directamente (sin flujo de auth)")
 	@ApiResponse(responseCode = "200", description = "Usuario creado con éxito")
 	@PostMapping
-	public Usuario crear(@RequestBody UsuarioInsertDTO u) {
+	public Usuario crear(@RequestBody @Valid UsuarioInsertDTO u) {
 		return service.crear(u);
 	}
 

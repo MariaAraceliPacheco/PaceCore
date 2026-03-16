@@ -96,6 +96,12 @@
     <scope>runtime</scope>
 </dependency>
 
+<!--Dependencia de validacion necesaria para validar los DTOs-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+
 
 <dependency>
 <groupId>org.json</groupId>
