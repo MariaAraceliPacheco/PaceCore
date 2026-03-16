@@ -7,25 +7,46 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "Datos para insertar un nuevo intervalo o serie")
 public class IntervaloInsertDTO {
+
+	@NotNull(message = "La distancia no puede ser null")
+	@DecimalMin("0")
+	@DecimalMax("99999")
 	@Schema(description = "Distancia del intervalo", example = "1000")
 	private BigDecimal distancia;
 
+	@NotNull
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	@Schema(type = "string", example = "00:00:00")
 	private LocalTime duracion;
 
+	@NotNull
 	@JsonProperty("tipo_actividad_id")
 	@Schema(description = "ID del tipo de actividad", example = "1")
 	private int tipoActividadId;
+
+	@DecimalMax("99999")
 	@Schema(description = "Desnivel acumulado del intervalo", example = "0.0")
 	private BigDecimal desnivel;
+
+	@Min(0)
+	@Max(250)
 	@Schema(description = "Frecuencia cardíaca media en el intervalo", example = "165")
 	private Integer fcMedia;
+
+	@Min(0)
+	@Max(250)
 	@Schema(description = "Frecuencia cardíaca máxima en el intervalo", example = "175")
 	private Integer fcMaxima;
+
+	// esto se calcula automaticamente
 	@Schema(description = "Zona de intensidad alcanzada", example = "4")
 	private Integer zona_alcanzada;
 

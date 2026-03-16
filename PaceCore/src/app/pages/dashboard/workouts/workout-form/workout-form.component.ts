@@ -24,6 +24,7 @@ import { Entreno } from '../../../../../models/entrenos/entreno.model';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { EntrenoUpdate } from '../../../../../models/entrenos/entreno-update.model';
 
 registerLocaleData(localeEs);
 @Component({
@@ -48,21 +49,10 @@ export class WorkoutFormComponent implements OnInit {
   activityTypes: TipoActividad[] = [];
   entreno: Entreno | null = null;
 
-  private toLocalDateTimeSeconds(value: unknown): string {
-    // `datetime-local` suele dar "YYYY-MM-DDTHH:mm". Backend espera LocalDateTime: "YYYY-MM-DDTHH:mm:ss".
-    if (typeof value === 'string') {
-      const trimmed = value.trim();
-      if (trimmed.length >= 19) return trimmed.slice(0, 19);
-      if (trimmed.length === 16) return `${trimmed}:00`;
-      return trimmed;
-    }
-
-    if (value instanceof Date && !isNaN(value.getTime())) {
-      const pad = (n: number) => String(n).padStart(2, '0');
-      return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}T${pad(value.getHours())}:${pad(value.getMinutes())}:${pad(value.getSeconds())}`;
-    }
-
-    return String(value ?? '');
+  private toLocalDateTimeSeconds(value: string): string {
+    // value viene de datetime-local → ya está en hora local correcta
+    if (value.length === 16) return value + ':00';
+    return value.slice(0, 19);
   }
 
   constructor(
@@ -101,11 +91,7 @@ export class WorkoutFormComponent implements OnInit {
   initForm(): void {
     const now = new Date();
     // Ajustamos a la zona horaria local para el input datetime-local (YYYY-MM-DDTHH:mm)
-    const localDateTime = new Date(
-      now.getTime() - now.getTimezoneOffset() * 60000,
-    )
-      .toISOString()
-      .slice(0, 16);
+    const localDateTime = new Date().toISOString().substring(0, 16);
 
     this.workoutForm = this.fb.group({
       titulo: ['', Validators.required],
@@ -173,6 +159,20 @@ export class WorkoutFormComponent implements OnInit {
       );
 
       const workoutData: EntrenoCreate = {
+        id_usuario: currentUser.usuario.id,
+        titulo: formData.titulo,
+        fecha: this.toLocalDateTimeSeconds(formData.fecha),
+        distancia: formData.distancia,
+        tiempo_total: formData.tiempo_total,
+        tipo_actividad_id: formData.tipo_actividad_id,
+        desnivel: formData.desnivel,
+        fcMedia: formData.fcMedia,
+        fcMaxima: formData.fcMaxima,
+        descripcion: formData.descripcion,
+        intervalos: mappedIntervalos,
+      };
+
+      const workoutDataUpdate: EntrenoUpdate = {
         titulo: formData.titulo,
         fecha: this.toLocalDateTimeSeconds(formData.fecha),
         distancia: formData.distancia,
@@ -187,9 +187,10 @@ export class WorkoutFormComponent implements OnInit {
 
       console.log('Enviando datos de entrenamiento:', workoutData);
 
+      //actualizar entreno
       if (this.entreno) {
         this.workoutService
-          .updateWorkout(this.entreno.id, workoutData)
+          .updateWorkout(this.entreno.id, workoutDataUpdate)
           .subscribe({
             next: () => {
               this.snackBar.open(
@@ -209,6 +210,7 @@ export class WorkoutFormComponent implements OnInit {
             },
           });
       } else {
+        //añadir entrenamiento
         this.workoutService.addWorkout(workoutData).subscribe({
           next: () => {
             this.snackBar.open(
@@ -246,7 +248,9 @@ export class WorkoutFormComponent implements OnInit {
 
     this.workoutForm.patchValue({
       titulo: this.entreno.titulo,
-      fecha: this.entreno.fecha ? this.entreno.fecha.slice(0, 16) : null,
+      fecha: this.entreno.fecha
+        ? this.formatForDatetimeLocal(this.entreno.fecha)
+        : null,
       distancia:
         this.entreno.distancia_entreno || (this.entreno as any).distancia,
       tiempo_total: this.formatTimeObject(
@@ -369,5 +373,12 @@ export class WorkoutFormComponent implements OnInit {
     const m = String(time.minute || 0).padStart(2, '0');
     const s = String(time.second || 0).padStart(2, '0');
     return `${h}:${m}:${s}`;
+  }
+  
+  private formatForDatetimeLocal(dateString: string): string {
+    const d = new Date(dateString); // JS convierte a hora local automáticamente
+    const pad = (n: number) => String(n).padStart(2, '0');
+
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 }

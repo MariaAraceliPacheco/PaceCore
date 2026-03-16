@@ -6,20 +6,29 @@ import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "Datos para actualizar un intervalo específico")
 public class IntervaloUpdateDTO {
 
+	@NotNull(message = "el tipo de actividad ID no puede ser null")
 	@Schema(description = "ID del nuevo tipo de actividad", example = "1")
 	private int tipo_actividad_id;
 
+	@NotNull(message = "La duracion no peude ser null")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	@Schema(type = "string", example = "00:00:00")
 	private LocalTime duracion;
 
+	@NotNull(message = "La distancia no puede ser null")
+	@DecimalMin("0")
+	@DecimalMax("99999")
 	@Schema(type = "string", example = "2,4", description = "Nueva distancia")
 	private BigDecimal distancia;
 
+	@DecimalMax("99999")
 	@Schema(type = "string", example = "8", description = "Nuevo desnivel")
 	private BigDecimal desnivel;
 

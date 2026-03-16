@@ -2,10 +2,10 @@ package com.example.demo.services;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,10 @@ import com.example.demo.repositories.TipoActividadRepository;
 import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.repositories.ZonasUsuarioRepository;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+
 @Service
 public class EntrenoService {
 
@@ -45,16 +49,19 @@ public class EntrenoService {
 	private final ZonasUsuarioRepository zonaRepo;
 	private final ZonaService zonaServ;
 
+	private Validator validator;
+
 	// Inyeccion de dependencias por el constructor (mejor forma)
 	public EntrenoService(EntrenoRepository repository, UsuarioRepository usuarioRepo,
 			TipoActividadRepository tipoActividadRepo, IntervaloRepository intervaloRepo,
-			ZonasUsuarioRepository zonaRepo, ZonaService zonaServ) {
+			ZonasUsuarioRepository zonaRepo, ZonaService zonaServ, Validator validator) {
 		this.repository = repository;
 		this.usuarioRepo = usuarioRepo;
 		this.tipoActividadRepo = tipoActividadRepo;
 		this.intervaloRepo = intervaloRepo;
 		this.zonaRepo = zonaRepo;
 		this.zonaServ = zonaServ;
+		this.validator = validator;
 	}
 
 	@Transactional
@@ -149,58 +156,58 @@ public class EntrenoService {
 			en.setTiempoTotal(tiempoTotalSegundos);
 			en.setFcMedia(calcularFcMediaPonderada(dto.getIntervalos()));
 			en.setFcMaxima(fcMaxima);
-			
-			
+
 			en.setZonaAlcanzada(zonaServ.determinarZona(zonasDelUsuario, en.getFcMedia()));
 		}
 
 		repository.save(en);
 		return en;
 	}
-	
+
 	@Transactional
 	public void recalcularZonasExistentes() {
-	    // Obtener todos los usuarios
-	    List<Usuario> usuarios = usuarioRepo.findAll();
-	    
-	    for (Usuario usuario : usuarios) {
-	        // Obtener las zonas configuradas del usuario
-	        List<ZonasUsuario> zonasDelUsuario = zonaRepo.findByUsuarioIdOrderByNumeroZonaAsc(usuario.getId());
-	        
-	        if (zonasDelUsuario.isEmpty()) {
-	            System.out.println("Usuario " + usuario.getId() + " no tiene zonas configuradas, saltando...");
-	            continue;
-	        }
-	        
-	        // Obtener todos los entrenos del usuario
-	        List<Entreno> entrenos = repository.findAllWithIntervalosByUsuario(usuario.getId());
-	        
-	        for (Entreno entreno : entrenos) {
-	            // Si el entreno tiene intervalos
-	            if (entreno.getIntervalos() != null && !entreno.getIntervalos().isEmpty()) {
-	                // Recalcular zona de cada intervalo
-	                for (Intervalo intervalo : entreno.getIntervalos()) {
-	                    Integer zonaCalculada = zonaServ.determinarZona(zonasDelUsuario, intervalo.getFcMedia());
-	                    intervalo.setZonaAlcanzada(zonaCalculada);
-	                    intervaloRepo.save(intervalo);
-	                }
-	                
-	                // Recalcular zona del entreno padre basándose en su FC media
-	                Integer zonaEntreno = zonaServ.determinarZona(zonasDelUsuario, entreno.getFcMedia());
-	                entreno.setZonaAlcanzada(zonaEntreno);
-	            } else {
-	                // Si no tiene intervalos, recalcular directamente
-	                Integer zonaEntreno = zonaServ.determinarZona(zonasDelUsuario, entreno.getFcMedia());
-	                entreno.setZonaAlcanzada(zonaEntreno);
-	            }
-	            
-	            repository.save(entreno);
-	        }
-	        
-	        System.out.println("Zonas recalculadas para usuario " + usuario.getId() + " - " + entrenos.size() + " entrenos procesados");
-	    }
-	    
-	    System.out.println("Migración completada");
+		// Obtener todos los usuarios
+		List<Usuario> usuarios = usuarioRepo.findAll();
+
+		for (Usuario usuario : usuarios) {
+			// Obtener las zonas configuradas del usuario
+			List<ZonasUsuario> zonasDelUsuario = zonaRepo.findByUsuarioIdOrderByNumeroZonaAsc(usuario.getId());
+
+			if (zonasDelUsuario.isEmpty()) {
+				System.out.println("Usuario " + usuario.getId() + " no tiene zonas configuradas, saltando...");
+				continue;
+			}
+
+			// Obtener todos los entrenos del usuario
+			List<Entreno> entrenos = repository.findAllWithIntervalosByUsuario(usuario.getId());
+
+			for (Entreno entreno : entrenos) {
+				// Si el entreno tiene intervalos
+				if (entreno.getIntervalos() != null && !entreno.getIntervalos().isEmpty()) {
+					// Recalcular zona de cada intervalo
+					for (Intervalo intervalo : entreno.getIntervalos()) {
+						Integer zonaCalculada = zonaServ.determinarZona(zonasDelUsuario, intervalo.getFcMedia());
+						intervalo.setZonaAlcanzada(zonaCalculada);
+						intervaloRepo.save(intervalo);
+					}
+
+					// Recalcular zona del entreno padre basándose en su FC media
+					Integer zonaEntreno = zonaServ.determinarZona(zonasDelUsuario, entreno.getFcMedia());
+					entreno.setZonaAlcanzada(zonaEntreno);
+				} else {
+					// Si no tiene intervalos, recalcular directamente
+					Integer zonaEntreno = zonaServ.determinarZona(zonasDelUsuario, entreno.getFcMedia());
+					entreno.setZonaAlcanzada(zonaEntreno);
+				}
+
+				repository.save(entreno);
+			}
+
+			System.out.println("Zonas recalculadas para usuario " + usuario.getId() + " - " + entrenos.size()
+					+ " entrenos procesados");
+		}
+
+		System.out.println("Migración completada");
 	}
 
 	private Integer calcularFcMediaPonderada(List<IntervaloInsertDTO> intervalos) {
@@ -343,6 +350,13 @@ public class EntrenoService {
 
 			// Guardar cada intervalo nuevo
 			for (IntervaloInsertDTO i : dto.getIntervalos()) {
+
+				// esto sirve para forzar la validacion antes de crear el objeto intervalo
+				Set<ConstraintViolation<IntervaloInsertDTO>> errores = validator.validate(i);
+				if (!errores.isEmpty()) {
+					throw new ConstraintViolationException(errores);
+				}
+
 				Intervalo inter = new Intervalo();
 				inter.setDistancia(i.getDistancia());
 				inter.setDuracion((long) i.getDuracion().toSecondOfDay());

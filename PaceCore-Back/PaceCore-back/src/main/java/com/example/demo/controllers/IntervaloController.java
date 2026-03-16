@@ -21,6 +21,7 @@ import com.example.demo.services.IntervaloService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/intervalo")
@@ -83,7 +84,7 @@ public class IntervaloController {
 	@ApiResponse(responseCode = "200", description = "Intervalo actualizado")
 	@ApiResponse(responseCode = "404", description = "Intervalo no encontrado")
 	@PutMapping("/{id}")
-	public ResponseEntity<Intervalo> modificarIntervalo(@RequestBody IntervaloUpdateDTO dto, @PathVariable int id) {
+	public ResponseEntity<Intervalo> modificarIntervalo(@RequestBody @Valid IntervaloUpdateDTO dto, @PathVariable int id) {
 		try {
 			Intervalo ta = service.modificarIntervalo(dto, id);
 			return ResponseEntity.ok(ta);

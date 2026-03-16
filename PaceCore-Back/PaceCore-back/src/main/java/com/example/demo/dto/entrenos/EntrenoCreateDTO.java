@@ -9,6 +9,7 @@ import com.example.demo.dto.intervalos.IntervaloInsertDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -66,6 +67,7 @@ public class EntrenoCreateDTO {
 	@Schema(description = "Frecuencia cardíaca máxima", example = "185")
 	private Integer fcMaxima;
 
+	@Valid
 	private List<IntervaloInsertDTO> intervalos;
 
 	public EntrenoCreateDTO(int id_usuario, Timestamp fecha, BigDecimal distancia, LocalTime tiempo_total,

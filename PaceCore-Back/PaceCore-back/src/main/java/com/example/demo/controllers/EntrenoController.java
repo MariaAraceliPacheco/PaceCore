@@ -43,7 +43,7 @@ public class EntrenoController {
 		return service.crearEntrenoCompleto(e);
 	}
 
-	@Operation(summary = "Modificar entrenamiento", description = "Actualiza los datos de un entrenamiento existente")
+	@Operation(summary = "Modificar entrenamiento a partir de su id", description = "Actualiza los datos de un entrenamiento existente")
 	@ApiResponse(responseCode = "200", description = "Entrenamiento actualizado")
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> modificarEntreno(@RequestBody @Valid EntrenoUpdateDTO e, @PathVariable int id) {
