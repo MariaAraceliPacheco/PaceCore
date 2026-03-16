@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.usuarios.UsuarioEstadisticasDTO;
 import com.example.demo.dto.usuarios.UsuarioEstadisticasSemanalesDTO;
 import com.example.demo.dto.usuarios.UsuarioInsertDTO;
+import com.example.demo.dto.usuarios.UsuarioResponseDTO;
 import com.example.demo.dto.usuarios.UsuarioUpdateDTO;
 import com.example.demo.entities.Usuario;
 import com.example.demo.services.UsuarioService;
@@ -39,7 +40,7 @@ public class UsuarioController {
 	@Operation(summary = "Crear usuario", description = "Registra un nuevo usuario directamente (sin flujo de auth)")
 	@ApiResponse(responseCode = "200", description = "Usuario creado con éxito")
 	@PostMapping
-	public Usuario crear(@RequestBody @Valid UsuarioInsertDTO u) {
+	public UsuarioResponseDTO crear(@RequestBody @Valid UsuarioInsertDTO u) {
 		return service.crear(u);
 	}
 

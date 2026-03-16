@@ -1,8 +1,6 @@
 package com.example.demo.services;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +16,13 @@ import com.example.demo.dto.tipoActividad.TipoActividadResultDTO;
 import com.example.demo.dto.usuarios.UsuarioEstadisticasDTO;
 import com.example.demo.dto.usuarios.UsuarioEstadisticasSemanalesDTO;
 import com.example.demo.dto.usuarios.UsuarioInsertDTO;
+import com.example.demo.dto.usuarios.UsuarioResponseDTO;
 import com.example.demo.dto.usuarios.UsuarioUpdateDTO;
 import com.example.demo.entities.Entreno;
 import com.example.demo.entities.Intervalo;
 import com.example.demo.entities.Tipoactividad;
 import com.example.demo.entities.Usuario;
+import com.example.demo.mappers.UsuarioMapper;
 import com.example.demo.repositories.EntrenoRepository;
 import com.example.demo.repositories.UsuarioRepository;
 
@@ -32,32 +32,27 @@ public class UsuarioService {
 	private final UsuarioRepository repoUser;
 	private final EntrenoRepository repository;
 	private final ZonaService zonaService;
+	private final UsuarioMapper usuarioMapper;
 
-	public UsuarioService(UsuarioRepository repoUser, EntrenoRepository repository, ZonaService zonaService) {
+	public UsuarioService(UsuarioRepository repoUser, UsuarioMapper usuarioMapper, EntrenoRepository repository,
+			ZonaService zonaService) {
 		this.repoUser = repoUser;
 		this.repository = repository;
 		this.zonaService = zonaService;
+		this.usuarioMapper = usuarioMapper;
 	}
 
 	// post
 	@Transactional
-	public Usuario crear(UsuarioInsertDTO u) {
-		Usuario us = new Usuario();
-		us.setNombre(u.getNombre());
-		us.setEmail(u.getEmail());
-		us.setPassword(u.getPassword());
-		//us.setFechaCreacion(Timestamp.from(Instant.now()));
-		if (u.getDescripcion() != null) {
-			us.setDescripcion(u.getDescripcion());
-		}
-		us.setAltura(u.getAltura());
-		us.setPeso(u.getPeso());
-		us.setEdad(u.getEdad());
+	public UsuarioResponseDTO crear(UsuarioInsertDTO u) {
+		Usuario us = usuarioMapper.toEntity(u);
 
+		// cuando se guarda el usuario, devuelve el objeto de usuario entero con el id
+		// incluido, para asi usar el id y crearle las zonas personalizadas
 		Usuario nuevo = repoUser.save(us);
 		zonaService.crearZonaUsuario(nuevo.getId());
-
-		return nuevo;
+		UsuarioResponseDTO response = usuarioMapper.toDto(nuevo);
+		return response;
 	}
 
 	// get
