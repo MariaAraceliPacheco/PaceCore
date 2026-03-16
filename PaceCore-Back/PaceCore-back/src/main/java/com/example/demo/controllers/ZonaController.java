@@ -23,6 +23,7 @@ import com.example.demo.services.ZonaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/zonas")
@@ -62,7 +63,7 @@ public class ZonaController {
 	@Operation(summary = "Modificar las zonas de un usuario", description = "Actualiza los rangos de FC para las 5 zonas de entrenamiento")
 	@ApiResponse(responseCode = "200", description = "Zonas actualizadas")
 	@PutMapping("/{id}")
-	public void modificarZona(@PathVariable int id, @RequestBody List<ZonasUpdateDTO> dtos) {
+	public void modificarZona(@PathVariable int id, @RequestBody @Valid List<ZonasUpdateDTO> dtos) {
 		service.actualizarZonasUsuario(id, dtos);
 	}
 

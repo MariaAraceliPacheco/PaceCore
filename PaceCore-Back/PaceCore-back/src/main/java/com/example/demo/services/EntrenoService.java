@@ -117,6 +117,13 @@ public class EntrenoService {
 			// si vienen intervalos, los atributos del entreno padre definidos arriba se
 			// asignaran dependiendo del resumen de los intervalos
 			for (IntervaloInsertDTO i : dto.getIntervalos()) {
+
+				// esto sirve para forzar la validacion antes de crear el objeto intervalo
+				Set<ConstraintViolation<IntervaloInsertDTO>> errores = validator.validate(i);
+				if (!errores.isEmpty()) {
+					throw new ConstraintViolationException(errores);
+				}
+
 				Intervalo inter = new Intervalo();
 				inter.setDistancia(i.getDistancia());
 				inter.setDuracion((long) i.getDuracion().toSecondOfDay());
