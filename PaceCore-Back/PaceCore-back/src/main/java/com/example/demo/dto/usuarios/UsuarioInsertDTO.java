@@ -17,9 +17,6 @@ public class UsuarioInsertDTO {
 	@Schema(description = "Contraseña de acceso", example = "password123")
 	private String password;
 
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	private Timestamp fecha_creacion;
-
 	@Schema(description = "Breve descripción o biografía", example = "Entusiasta del running")
 	private String descripcion;
 	@Schema(description = "Peso en kilogramos", example = "75.5")
@@ -29,13 +26,12 @@ public class UsuarioInsertDTO {
 	@Schema(description = "Edad del usuario", example = "30")
 	private Integer edad;
 
-	public UsuarioInsertDTO(String nombre, String email, String password, Timestamp fecha_creacion, String descripcion,
+	public UsuarioInsertDTO(String nombre, String email, String password, String descripcion,
 			Integer edad, BigDecimal peso, BigDecimal altura) {
 		super();
 		this.nombre = nombre;
 		this.email = email;
 		this.password = password;
-		this.fecha_creacion = fecha_creacion;
 		this.descripcion = descripcion;
 		this.peso = peso;
 		this.altura = altura;
@@ -100,14 +96,6 @@ public class UsuarioInsertDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Timestamp getFecha_creacion() {
-		return fecha_creacion;
-	}
-
-	public void setFecha_creacion(Timestamp fecha_creacion) {
-		this.fecha_creacion = fecha_creacion;
 	}
 
 }

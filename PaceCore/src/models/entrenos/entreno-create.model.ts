@@ -1,4 +1,4 @@
-import { IntervalCreate } from "./interval-create.model";
+import { IntervalCreate } from "../intervalos/interval-create.model";
 
 export interface EntrenoCreate {
     id_usuario?: number;

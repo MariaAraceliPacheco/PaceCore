@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { TipoActividad } from '../../models/tipo-actividad.model';
+import { TipoActividad } from '../../models/tipoActividad/tipo-actividad.model';
 
 @Injectable({
   providedIn: 'root'

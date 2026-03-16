@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ public class UsuarioService {
 		us.setNombre(u.getNombre());
 		us.setEmail(u.getEmail());
 		us.setPassword(u.getPassword());
-		us.setFechaCreacion(u.getFecha_creacion());
+		//us.setFechaCreacion(Timestamp.from(Instant.now()));
 		if (u.getDescripcion() != null) {
 			us.setDescripcion(u.getDescripcion());
 		}

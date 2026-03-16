@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -25,6 +27,7 @@ public class Usuario implements Serializable {
 	private String email;
 
 	@Column(name = "fecha_creacion")
+	@CreationTimestamp // con esta anotacion se asigna automaticamente el timestamp con la fecha actual
 	private Timestamp fechaCreacion;
 
 	private String nombre;
@@ -47,7 +50,8 @@ public class Usuario implements Serializable {
 	private List<Entreno> entrenos;
 
 	// un usuario puede tener varias zonas de entrenamiento (5)
-	// con mappedBy es como si se le estuviera diciendo a JPA que la configuracion de
+	// con mappedBy es como si se le estuviera diciendo a JPA que la configuracion
+	// de
 	// como se unen estas dos tablas (el nombre de columna fk) está en el atributo
 	// llamado "usuario" de la entidad ZonasUsuario
 	@OneToMany(mappedBy = "usuario")
@@ -166,5 +170,5 @@ public class Usuario implements Serializable {
 	public void setZonas(List<ZonasUsuario> zonas) {
 		this.zonas = zonas;
 	}
-	
+
 }

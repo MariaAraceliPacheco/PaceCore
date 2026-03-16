@@ -1,17 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WorkoutService } from '../../../services/workout.service';
-import { TipoActividad } from '../../../../models/tipo-actividad.model';
-import { Estadisticas } from '../../../../models/estadisticas.model';
+import { TipoActividad } from '../../../../models/tipoActividad/tipo-actividad.model';
+import { Estadisticas } from '../../../../models/estadisticas/estadisticas.model';
 import { AuthService } from '../../../services/auth.service';
-import { EstadisticasSemanalesDTO } from '../../../../models/estadisticasSemanalesDTO.model';
+import { EstadisticasSemanalesDTO } from '../../../../models/estadisticas/estadisticasSemanalesDTO.model';
 import { CommonModule } from '@angular/common';
 import { FormatSecondsPipe } from '../../../pipes/format-seconds.pipe';
 import { UsuarioService } from '../../../services/usuario.service';
 import { Chart, registerables } from 'chart.js';
 import { ZonasService } from '../../../services/zonas.service';
-import { PorcentajesZonasDTO } from '../../../../models/PorcentajesZonasDTO.model';
-import { ActividadConteoDTO } from '../../../../models/actividadConteoDTO.model';
+import { PorcentajesZonasDTO } from '../../../../models/zonas/PorcentajesZonasDTO.model';
+import { ActividadConteoDTO } from '../../../../models/estadisticas/actividadConteoDTO.model';
 import { RitmoPipe } from '../../../pipes/ritmo.pipe';
 
 Chart.register(...registerables);

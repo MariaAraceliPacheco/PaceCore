@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { AuthService, LoginResponse } from './auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, shareReplay, tap, catchError, of } from 'rxjs';
-import { TipoActividad } from '../../models/tipo-actividad.model';
-import { Entreno } from '../../models/entreno.model';
-import { EntrenoCreate } from '../../models/entreno-create.model';
-import { Estadisticas } from '../../models/estadisticas.model';
+import { TipoActividad } from '../../models/tipoActividad/tipo-actividad.model';
+import { Entreno } from '../../models/entrenos/entreno.model';
+import { EntrenoCreate } from '../../models/entrenos/entreno-create.model';
+import { Estadisticas } from '../../models/estadisticas/estadisticas.model';
 
 @Injectable({
     providedIn: 'root'

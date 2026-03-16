@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService, LoginResponse } from './auth.service';
-import { UsuarioUpdate } from '../../models/usuario-update.model';
+import { UsuarioUpdate } from '../../models/usuario/usuario-update.model';
 import { Observable } from 'rxjs';
-import { EstadisticasSemanalesDTO } from '../../models/estadisticasSemanalesDTO.model';
+import { EstadisticasSemanalesDTO } from '../../models/estadisticas/estadisticasSemanalesDTO.model';
 
 interface Usuario {
   id: number;

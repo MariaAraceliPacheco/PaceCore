@@ -65,7 +65,8 @@ public class AuthService {
 		String hash = encoder.encode(dto.getPassword());
 		System.out.println("La contraseña es: " + dto.getPassword());
 		us.setPassword(hash);
-		us.setFechaCreacion(dto.getFecha_creacion());
+		//con la anotacion @CreationTimeStamp ya se pone automaticamente la fecha
+		//us.setFechaCreacion(Timestamp.from(Instant.now()));
 		if (dto.getDescripcion() != null) {
 			us.setDescripcion(dto.getDescripcion());
 		}

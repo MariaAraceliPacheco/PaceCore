@@ -1,5 +1,5 @@
-import { Intervalo } from "./intervalo.model";
-import { TipoActividad } from "./tipo-actividad.model";
+import { Intervalo } from "../intervalos/intervalo.model";
+import { TipoActividad } from "../tipoActividad/tipo-actividad.model";
 
 export interface Entreno {
     id: number;

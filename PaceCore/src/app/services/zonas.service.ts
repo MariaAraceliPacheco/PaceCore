@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { ZonasResponseDTO } from '../../models/zonasResponseDTO.model';
-import { ZonasUpdateDTO } from '../../models/zonasUpdateDTO.model';
+import { ZonasResponseDTO } from '../../models/zonas/zonasResponseDTO.model';
+import { ZonasUpdateDTO } from '../../models/zonas/zonasUpdateDTO.model';
 import { Observable } from 'rxjs';
-import { PorcentajesZonasDTO } from '../../models/PorcentajesZonasDTO.model';
-import { ActividadConteoDTO } from '../../models/actividadConteoDTO.model';
+import { PorcentajesZonasDTO } from '../../models/zonas/PorcentajesZonasDTO.model';
+import { ActividadConteoDTO } from '../../models/estadisticas/actividadConteoDTO.model';
 
 @Injectable({
   providedIn: 'root'

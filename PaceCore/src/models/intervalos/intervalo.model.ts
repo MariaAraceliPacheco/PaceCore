@@ -1,4 +1,4 @@
-import { TipoActividad } from "./tipo-actividad.model";
+import { TipoActividad } from "../tipoActividad/tipo-actividad.model";
 
 export interface Intervalo {
     id: number;

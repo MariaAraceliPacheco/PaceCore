@@ -8,13 +8,13 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WorkoutFormComponent } from '../workouts/workout-form/workout-form.component';
 import { WorkoutPreviewComponent } from '../workouts/workout-preview/workout-preview.component';
 import { WorkoutService } from '../../../services/workout.service';
-import { Entreno } from '../../../../models/entreno.model';
+import { Entreno } from '../../../../models/entrenos/entreno.model';
 import { ActivityIconPipe } from '../../../pipes/activity-icon.pipe';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { FormatSecondsPipe } from '../../../pipes/format-seconds.pipe';
-import { Estadisticas } from '../../../../models/estadisticas.model';
+import { Estadisticas } from '../../../../models/estadisticas/estadisticas.model';
 import { RecomendacionComponent } from './recomendacion/recomendacion.component';
 import { RitmoPipe } from '../../../pipes/ritmo.pipe';
 

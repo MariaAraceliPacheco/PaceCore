@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Entreno } from '../../../../../models/entreno.model';
+import { Entreno } from '../../../../../models/entrenos/entreno.model';
 import { ActivityIconPipe } from '../../../../pipes/activity-icon.pipe';
 import { WorkoutFormComponent } from '../workout-form/workout-form.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';

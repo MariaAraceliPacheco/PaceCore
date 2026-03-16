@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { UsuarioService } from '../../../services/usuario.service';
-import { UsuarioUpdate } from '../../../../models/usuario-update.model';
+import { UsuarioUpdate } from '../../../../models/usuario/usuario-update.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../components/confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { ZonasService } from '../../../services/zonas.service';
-import { ZonasResponseDTO } from '../../../../models/zonasResponseDTO.model';
-import { ZonasUpdateDTO } from '../../../../models/zonasUpdateDTO.model';
+import { ZonasResponseDTO } from '../../../../models/zonas/zonasResponseDTO.model';
+import { ZonasUpdateDTO } from '../../../../models/zonas/zonasUpdateDTO.model';
 
 interface LoginResponse {
   token: string;
