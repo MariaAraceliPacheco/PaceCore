@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface EntrenamientoSugeridoRepository extends JpaRepository<EntrenamientoSugerido, Integer> {
 
-	List<EntrenamientoSugerido> findByUsuarioAndEstadoAndFechaGeneracionAfter(int usuarioId, EstadoSugerencia estado,
+	List<EntrenamientoSugerido> findByUsuarioIdAndEstadoAndFechaGeneracionAfter(int usuarioId, EstadoSugerencia estado,
 			LocalDateTime fecha);
 
 	// si devuelve algo significa que ya se ha generado el entrenamiento sugerido de

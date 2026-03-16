@@ -15,21 +15,21 @@ import jakarta.validation.constraints.Size;
 @Schema(description = "Datos necesarios para registrar un nuevo usuario")
 public class UsuarioInsertDTO {
 
-	@NotBlank
+	@NotBlank(message = "El nombre no puede estar vacio")
 	@Schema(description = "Nombre completo del usuario", example = "Juan Pérez")
 	private String nombre;
 
-	@Email
-	@NotBlank
+	@Email(message = "El email tiene que tener formato de email juan.perez@example.com")
+	@NotBlank(message = "El email no puede estar vacio")
 	@Schema(description = "Correo electrónico único", example = "juan.perez@example.com")
 	private String email;
 
-	@NotBlank
+	@NotBlank(message = "El password no puede estar vacio")
 	@Size(min = 6, max = 64)
 	@Schema(description = "Contraseña de acceso", example = "password123")
 	private String password;
 
-	@Size(max = 255)
+	@Size(max = 255, message = "La descripcion no puede tener mas de 255 caracteres")
 	@Schema(description = "Breve descripción o biografía", example = "Entusiasta del running")
 	private String descripcion;
 
@@ -48,7 +48,7 @@ public class UsuarioInsertDTO {
 	// este es un tipo numero Entero, por lo que se usa la anotacion @Min y @Max
 	@Min(0)
 	@Max(150)
-	@NotNull
+	@NotNull(message = "La edad no puede estar vacia")
 	private Integer edad;
 
 	public UsuarioInsertDTO(String nombre, String email, String password, String descripcion, Integer edad,
