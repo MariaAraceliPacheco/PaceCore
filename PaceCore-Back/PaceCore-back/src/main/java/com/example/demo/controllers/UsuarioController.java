@@ -70,7 +70,7 @@ public class UsuarioController {
 	@ApiResponse(responseCode = "200", description = "Usuario actualizado")
 	@ApiResponse(responseCode = "404", description = "Usuario no encontrado")
 	@PutMapping("/{id}")
-	public ResponseEntity<Usuario> modificarUsuario(@RequestBody UsuarioUpdateDTO u, @PathVariable int id) {
+	public ResponseEntity<Usuario> modificarUsuario(@RequestBody @Valid UsuarioUpdateDTO u, @PathVariable int id) {
 		try {
 			Usuario user = service.modificarUsuario(u, id);
 			return ResponseEntity.ok(user);
