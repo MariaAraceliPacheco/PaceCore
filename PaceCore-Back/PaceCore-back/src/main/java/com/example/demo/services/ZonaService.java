@@ -3,6 +3,7 @@ package com.example.demo.services;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,18 +18,24 @@ import com.example.demo.repositories.EntrenoRepository;
 import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.repositories.ZonasUsuarioRepository;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+
 @Service
 public class ZonaService {
 
 	private final ZonasUsuarioRepository repo;
 	private final UsuarioRepository usuarioRepo;
 	private final EntrenoRepository entrenoRepo;
+	private Validator validator;
 
-	public ZonaService(ZonasUsuarioRepository repo, UsuarioRepository usuarioRepo, EntrenoRepository entrenoRepo) {
+	public ZonaService(ZonasUsuarioRepository repo, Validator validator, UsuarioRepository usuarioRepo, EntrenoRepository entrenoRepo) {
 		super();
 		this.repo = repo;
 		this.usuarioRepo = usuarioRepo;
 		this.entrenoRepo = entrenoRepo;
+		this.validator = validator;
 	}
 
 	public List<ZonasUsuario> obtenerZonasPorUsuario(int id) {
@@ -38,6 +45,13 @@ public class ZonaService {
 	@Transactional
 	public void actualizarZonasUsuario(int idUsuario, List<ZonasUpdateDTO> dtos) {
 		for (ZonasUpdateDTO a : dtos) {
+			// esto sirve para forzar la validacion antes de crear el objeto intervalo
+			Set<ConstraintViolation<ZonasUpdateDTO>> errores = validator.validate(a);
+			if (!errores.isEmpty()) {
+				throw new ConstraintViolationException(errores);
+			}
+
+			
 			// obtener la zona original del usuario, luego se le cambiaran los datos
 			// necesarios
 			ZonasUsuario z = repo.findById(a.getId())

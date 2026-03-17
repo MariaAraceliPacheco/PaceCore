@@ -12,11 +12,11 @@ public class ZonasUpdateDTO {
 
 	@NotNull
 	@Schema(description = "ID de la zona", example = "1")
-	private int id;
+	private Integer id;
 
 	@NotNull
 	@Schema(description = "Número correlativo", example = "1")
-	private int numero_zona;
+	private Integer numero_zona;
 
 	@NotBlank(message = "El nombre de la zona no puede estar vacio")
 	@Size(min = 1, max = 64)
@@ -39,7 +39,7 @@ public class ZonasUpdateDTO {
 	@Schema(description = "Nueva descripción", example = "Zona de fondo")
 	private String descripcion;
 
-	public ZonasUpdateDTO(int id, int numero_zona, String nombre_zona, Integer fc_minima, Integer fc_maxima,
+	public ZonasUpdateDTO(Integer id, Integer numero_zona, String nombre_zona, Integer fc_minima, Integer fc_maxima,
 			String descripcion) {
 		super();
 		this.id = id;
@@ -54,19 +54,19 @@ public class ZonasUpdateDTO {
 		super();
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getNumero_zona() {
+	public Integer getNumero_zona() {
 		return numero_zona;
 	}
 
-	public void setNumero_zona(int numero_zona) {
+	public void setNumero_zona(Integer numero_zona) {
 		this.numero_zona = numero_zona;
 	}
 

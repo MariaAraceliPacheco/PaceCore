@@ -63,7 +63,7 @@ public class ZonaController {
 	@Operation(summary = "Modificar las zonas de un usuario", description = "Actualiza los rangos de FC para las 5 zonas de entrenamiento")
 	@ApiResponse(responseCode = "200", description = "Zonas actualizadas")
 	@PutMapping("/{id}")
-	public void modificarZona(@PathVariable int id, @RequestBody @Valid List<ZonasUpdateDTO> dtos) {
+	public void modificarZona(@PathVariable int id, @RequestBody List<@Valid ZonasUpdateDTO> dtos) {
 		service.actualizarZonasUsuario(id, dtos);
 	}
 
