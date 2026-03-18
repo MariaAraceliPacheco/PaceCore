@@ -3,6 +3,7 @@ package com.example.demo.mappers.usuario;
 import org.mapstruct.InheritConfiguration;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import com.example.demo.dto.usuarios.UsuarioInsertDTO;
 import com.example.demo.dto.usuarios.UsuarioResponseDTO;
@@ -33,13 +34,8 @@ public interface UsuarioMapperConfig {
 	@Mapping(target = "fechaCreacion", ignore = true)
 	@Mapping(target = "entrenos", ignore = true)
 	@Mapping(target = "zonas", ignore = true)
-	@Mapping(target = "entrenamientoSugerido", ignore = true)
+	// @Mapping(target = "entrenamientoSugerido", ignore = true)
 	@Mapping(target = "password", ignore = true)
-	Usuario baseFromUpdate(UsuarioUpdateDTO dto);
-
-	@InheritConfiguration(name = "baseFromInsert")
-	// se puede sobreescribir la regla de id si es necesario
-	@Mapping(target = "id", ignore = false)
-	Usuario baseFromResponse(UsuarioResponseDTO dto);
+	void baseFromUpdate(UsuarioUpdateDTO dto, @MappingTarget Usuario entity);
 
 }

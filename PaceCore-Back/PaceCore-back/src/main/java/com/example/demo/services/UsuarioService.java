@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,20 +34,25 @@ public class UsuarioService {
 	private final EntrenoRepository repository;
 	private final ZonaService zonaService;
 	private UsuarioMapper usuarioMapper;
+	private PasswordEncoder encoder;
 
-	public UsuarioService(UsuarioRepository repoUser, UsuarioMapper usuarioMapper,  EntrenoRepository repository,
-			ZonaService zonaService) {
+	public UsuarioService(UsuarioRepository repoUser, PasswordEncoder encoder, UsuarioMapper usuarioMapper,
+			EntrenoRepository repository, ZonaService zonaService) {
 		this.repoUser = repoUser;
 		this.repository = repository;
 		this.zonaService = zonaService;
 		this.usuarioMapper = usuarioMapper;
+		this.encoder = encoder;
 	}
 
 	// post
 	@Transactional
 	public UsuarioResponseDTO crear(UsuarioInsertDTO u) {
 		Usuario us = usuarioMapper.toEntityFromUsuarioInsertDTO(u);
+		String password = encoder.encode(u.getPassword());
 
+		us.setPassword(password);
+		
 		// cuando se guarda el usuario, devuelve el objeto de usuario entero con el id
 		// incluido, para asi usar el id y crearle las zonas personalizadas
 		Usuario nuevo = repoUser.save(us);
@@ -81,7 +86,7 @@ public class UsuarioService {
 	public Usuario modificarUsuario(UsuarioUpdateDTO u, int id) {
 		Usuario user = repoUser.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-		user = usuarioMapper.toEntityFromUsuarioUpdate(u);
+		usuarioMapper.updateUsuarioFromDTO(u, user);
 
 		return repoUser.save(user);
 	}
