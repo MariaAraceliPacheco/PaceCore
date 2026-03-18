@@ -411,6 +411,17 @@ public class EntrenoService {
 		return response;
 	}
 
+	/**
+	 * Este metodo sirve para que en caso de que un entrenamiento tenga intervalos,
+	 * los valores que se le asignen al padre sea un resumen/total de todos los
+	 * intervalos
+	 * 
+	 * En caso de que un entreno no tenga intervalos, el entreno tendrá los datos
+	 * propios suyos y no se le cambiaran
+	 * 
+	 * @param padre
+	 * @param intervalosDtos
+	 */
 	private void resumirIntervalosEnPadre(Entreno padre, List<IntervaloInsertDTO> intervalosDtos) {
 		BigDecimal distanciaTotal = BigDecimal.ZERO;
 		BigDecimal desnivelTotal = BigDecimal.ZERO;

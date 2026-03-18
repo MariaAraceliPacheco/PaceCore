@@ -1,12 +1,10 @@
 package com.example.demo.mappers.usuario;
 
-import org.mapstruct.InheritConfiguration;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import com.example.demo.dto.usuarios.UsuarioInsertDTO;
-import com.example.demo.dto.usuarios.UsuarioResponseDTO;
 import com.example.demo.dto.usuarios.UsuarioUpdateDTO;
 import com.example.demo.entities.Usuario;
 

@@ -14,6 +14,7 @@ import com.example.demo.entities.Entreno;
 import com.example.demo.entities.Intervalo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.entities.ZonasUsuario;
+import com.example.demo.mappers.zonas.ZonasMapper;
 import com.example.demo.repositories.EntrenoRepository;
 import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.repositories.ZonasUsuarioRepository;
@@ -29,13 +30,16 @@ public class ZonaService {
 	private final UsuarioRepository usuarioRepo;
 	private final EntrenoRepository entrenoRepo;
 	private Validator validator;
+	private ZonasMapper mapper;
 
-	public ZonaService(ZonasUsuarioRepository repo, Validator validator, UsuarioRepository usuarioRepo, EntrenoRepository entrenoRepo) {
+	public ZonaService(ZonasUsuarioRepository repo, ZonasMapper mapper, Validator validator,
+			UsuarioRepository usuarioRepo, EntrenoRepository entrenoRepo) {
 		super();
 		this.repo = repo;
 		this.usuarioRepo = usuarioRepo;
 		this.entrenoRepo = entrenoRepo;
 		this.validator = validator;
+		this.mapper = mapper;
 	}
 
 	public List<ZonasUsuario> obtenerZonasPorUsuario(int id) {
@@ -51,7 +55,6 @@ public class ZonaService {
 				throw new ConstraintViolationException(errores);
 			}
 
-			
 			// obtener la zona original del usuario, luego se le cambiaran los datos
 			// necesarios
 			ZonasUsuario z = repo.findById(a.getId())
@@ -62,12 +65,7 @@ public class ZonaService {
 				throw new RuntimeException("no tienes permiso para editar esta zona");
 			}
 
-			z.setDescripcion(a.getDescripcion());
-			z.setFcMaxima(a.getFc_maxima());
-			z.setFcMinima(a.getFc_minima());
-			z.setNombreZona(a.getNombre_zona());
-			z.setNumeroZona(a.getNumero_zona());
-
+			mapper.updateFromZonasUpdateDTO(a, z);
 			// como el metodo es transactional, se guardará todo al final del bucle
 			repo.save(z);
 		}

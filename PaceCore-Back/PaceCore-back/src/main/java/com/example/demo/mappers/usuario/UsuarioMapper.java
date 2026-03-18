@@ -25,16 +25,15 @@ public interface UsuarioMapper {
 	// estas listas se ignoran porque no vienen del DTO
 	@Mapping(target = "entrenos", ignore = true)
 	@Mapping(target = "zonas", ignore = true)
-	//@Mapping(target = "entrenamientoSugerido", ignore = true)
+	// @Mapping(target = "entrenamientoSugerido", ignore = true)
 	Usuario toEntityFromUsuarioInsertDTO(UsuarioInsertDTO dto);
 
 	UsuarioResponseDTO toUsuarioResponseDTO(Usuario usuario);
 
-	
 	Usuario toEntityFromUsuarioResponseDTO(UsuarioResponseDTO dto);
 
-	//con el @MappingTarget no se crea una entidad nueva con los valores del dto
-	//solamente actualiza los campos del dto, y el resto los mantiene intactos
+	// con el @MappingTarget no se crea una entidad nueva con los valores del dto
+	// solamente actualiza los campos del dto, y el resto los mantiene intactos
 	@InheritConfiguration(name = "baseFromUpdate")
 	void updateUsuarioFromDTO(UsuarioUpdateDTO dto, @MappingTarget Usuario entity);
 

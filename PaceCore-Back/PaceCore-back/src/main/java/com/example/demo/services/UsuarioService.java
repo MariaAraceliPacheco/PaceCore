@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,9 +34,9 @@ public class UsuarioService {
 	private final EntrenoRepository repository;
 	private final ZonaService zonaService;
 	private UsuarioMapper usuarioMapper;
-	private PasswordEncoder encoder;
+	private BCryptPasswordEncoder encoder;
 
-	public UsuarioService(UsuarioRepository repoUser, PasswordEncoder encoder, UsuarioMapper usuarioMapper,
+	public UsuarioService(UsuarioRepository repoUser, BCryptPasswordEncoder encoder, UsuarioMapper usuarioMapper,
 			EntrenoRepository repository, ZonaService zonaService) {
 		this.repoUser = repoUser;
 		this.repository = repository;
@@ -52,7 +52,7 @@ public class UsuarioService {
 		String password = encoder.encode(u.getPassword());
 
 		us.setPassword(password);
-		
+
 		// cuando se guarda el usuario, devuelve el objeto de usuario entero con el id
 		// incluido, para asi usar el id y crearle las zonas personalizadas
 		Usuario nuevo = repoUser.save(us);
@@ -85,7 +85,6 @@ public class UsuarioService {
 
 	public Usuario modificarUsuario(UsuarioUpdateDTO u, int id) {
 		Usuario user = repoUser.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
 		usuarioMapper.updateUsuarioFromDTO(u, user);
 
 		return repoUser.save(user);

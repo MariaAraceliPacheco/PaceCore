@@ -9,6 +9,7 @@ import com.example.demo.dto.auth.LoginResponse;
 import com.example.demo.dto.usuarios.UsuarioInsertDTO;
 import com.example.demo.dto.usuarios.UsuarioResponseDTO;
 import com.example.demo.entities.Usuario;
+import com.example.demo.mappers.usuario.UsuarioMapper;
 import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.security.AutenticadorJWT;
 
@@ -18,12 +19,15 @@ public class AuthService {
 	private final UsuarioRepository repo;
 	private final BCryptPasswordEncoder encoder;
 	private final ZonaService zonaService;
+	private UsuarioMapper usuarioMapper;
 
-	public AuthService(UsuarioRepository repo, BCryptPasswordEncoder encoder, ZonaService zonaService) {
+	public AuthService(UsuarioRepository repo, UsuarioMapper usuarioMapper, BCryptPasswordEncoder encoder,
+			ZonaService zonaService) {
 		super();
 		this.repo = repo;
 		this.encoder = encoder;
 		this.zonaService = zonaService;
+		this.usuarioMapper = usuarioMapper;
 	}
 
 	public LoginResponse login(LoginDTO dto) {
@@ -35,15 +39,7 @@ public class AuthService {
 		}
 
 		String token = AutenticadorJWT.codificaJWT(u);
-		UsuarioResponseDTO e = new UsuarioResponseDTO();
-		e.setId(u.getId());
-		e.setNombre(u.getNombre());
-		e.setEmail(u.getEmail());
-		e.setAltura(u.getAltura());
-		e.setDescripcion(u.getDescripcion());
-		e.setRol(u.getRol());
-		e.setPeso(u.getPeso());
-		e.setEdad(u.getEdad());
+		UsuarioResponseDTO e = usuarioMapper.toUsuarioResponseDTO(u);
 
 		LoginResponse resp = new LoginResponse();
 		resp.setToken(token);
@@ -58,22 +54,9 @@ public class AuthService {
 			throw new RuntimeException("Email ya registrado");
 		}
 
-		Usuario us = new Usuario();
-		us.setNombre(dto.getNombre());
-		us.setEmail(dto.getEmail());
-
-		String hash = encoder.encode(dto.getPassword());
-		System.out.println("La contraseña es: " + dto.getPassword());
-		us.setPassword(hash);
-		//con la anotacion @CreationTimeStamp ya se pone automaticamente la fecha
-		//us.setFechaCreacion(Timestamp.from(Instant.now()));
-		if (dto.getDescripcion() != null) {
-			us.setDescripcion(dto.getDescripcion());
-		}
-		us.setRol("USUARIO");
-		us.setAltura(dto.getAltura());
-		us.setPeso(dto.getPeso());
-		us.setEdad(dto.getEdad());
+		Usuario us = usuarioMapper.toEntityFromUsuarioInsertDTO(dto);
+		String password = encoder.encode(dto.getPassword());
+		us.setPassword(password);
 
 		// con save and flush se obliga a Spring Data JPA a hacer el insert y el commit
 		// en la bd, para que asi podamos tener acceso al id del usuario que se acaba de
@@ -92,16 +75,7 @@ public class AuthService {
 			return null;
 		}
 		Usuario u = repo.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado el usuario"));
-		UsuarioResponseDTO e = new UsuarioResponseDTO();
-
-		e.setId(u.getId());
-		e.setNombre(u.getNombre());
-		e.setEmail(u.getEmail());
-		e.setAltura(u.getAltura());
-		e.setDescripcion(u.getDescripcion());
-		e.setRol(u.getRol());
-		e.setPeso(u.getPeso());
-		e.setEdad(u.getEdad());
+		UsuarioResponseDTO e = usuarioMapper.toUsuarioResponseDTO(u);
 
 		return e;
 	}
