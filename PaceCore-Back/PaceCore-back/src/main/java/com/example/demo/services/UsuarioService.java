@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import com.example.demo.entities.Entreno;
 import com.example.demo.entities.Intervalo;
 import com.example.demo.entities.Tipoactividad;
 import com.example.demo.entities.Usuario;
-import com.example.demo.mappers.UsuarioMapper;
+import com.example.demo.mappers.usuario.UsuarioMapper;
 import com.example.demo.repositories.EntrenoRepository;
 import com.example.demo.repositories.UsuarioRepository;
 
@@ -32,9 +33,9 @@ public class UsuarioService {
 	private final UsuarioRepository repoUser;
 	private final EntrenoRepository repository;
 	private final ZonaService zonaService;
-	private final UsuarioMapper usuarioMapper;
+	private UsuarioMapper usuarioMapper;
 
-	public UsuarioService(UsuarioRepository repoUser, UsuarioMapper usuarioMapper, EntrenoRepository repository,
+	public UsuarioService(UsuarioRepository repoUser, UsuarioMapper usuarioMapper,  EntrenoRepository repository,
 			ZonaService zonaService) {
 		this.repoUser = repoUser;
 		this.repository = repository;
@@ -45,13 +46,13 @@ public class UsuarioService {
 	// post
 	@Transactional
 	public UsuarioResponseDTO crear(UsuarioInsertDTO u) {
-		Usuario us = usuarioMapper.toEntity(u);
+		Usuario us = usuarioMapper.toEntityFromUsuarioInsertDTO(u);
 
 		// cuando se guarda el usuario, devuelve el objeto de usuario entero con el id
 		// incluido, para asi usar el id y crearle las zonas personalizadas
 		Usuario nuevo = repoUser.save(us);
 		zonaService.crearZonaUsuario(nuevo.getId());
-		UsuarioResponseDTO response = usuarioMapper.toDto(nuevo);
+		UsuarioResponseDTO response = usuarioMapper.toUsuarioResponseDTO(nuevo);
 		return response;
 	}
 
@@ -79,14 +80,9 @@ public class UsuarioService {
 
 	public Usuario modificarUsuario(UsuarioUpdateDTO u, int id) {
 		Usuario user = repoUser.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-		user.setNombre(u.getNombre());
-		user.setEmail(u.getEmail());
-		user.setAltura(u.getAltura());
-		if (u.getDescripcion() != null) {
-			user.setDescripcion(u.getDescripcion());
-		}
-		user.setEdad(u.getEdad());
-		user.setPeso(u.getPeso());
+
+		user = usuarioMapper.toEntityFromUsuarioUpdate(u);
+
 		return repoUser.save(user);
 	}
 
