@@ -7,7 +7,6 @@ import org.mapstruct.MappingTarget;
 import com.example.demo.dto.zonas.ZonasUpdateDTO;
 import com.example.demo.entities.ZonasUsuario;
 
-
 @Mapper(componentModel = "spring")
 public interface ZonasMapper {
 
@@ -17,5 +16,5 @@ public interface ZonasMapper {
 	@Mapping(source = "numero_zona", target = "numeroZona")
 	@Mapping(target = "usuario", ignore = true)
 	void updateFromZonasUpdateDTO(ZonasUpdateDTO dto, @MappingTarget ZonasUsuario entity);
-	
+
 }

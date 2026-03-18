@@ -28,6 +28,7 @@ import com.example.demo.repositories.IntervaloRepository;
 import com.example.demo.repositories.TipoActividadRepository;
 import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.repositories.ZonasUsuarioRepository;
+import com.example.demo.tests.MetodosEntrenoService;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -48,13 +49,17 @@ public class EntrenoService {
 	private IntervaloRepository intervaloRepo;
 	private final ZonasUsuarioRepository zonaRepo;
 	private final ZonaService zonaServ;
+	private MetodosEntrenoService metodos = new MetodosEntrenoService();
+
+	// private TestsMetodosEntrenoService metodos
 
 	private Validator validator;
 
 	// Inyeccion de dependencias por el constructor (mejor forma)
 	public EntrenoService(EntrenoRepository repository, UsuarioRepository usuarioRepo,
 			TipoActividadRepository tipoActividadRepo, IntervaloRepository intervaloRepo,
-			ZonasUsuarioRepository zonaRepo, ZonaService zonaServ, Validator validator) {
+			ZonasUsuarioRepository zonaRepo, ZonaService zonaServ, Validator validator,
+			MetodosEntrenoService metodos) {
 		this.repository = repository;
 		this.usuarioRepo = usuarioRepo;
 		this.tipoActividadRepo = tipoActividadRepo;
@@ -62,6 +67,7 @@ public class EntrenoService {
 		this.zonaRepo = zonaRepo;
 		this.zonaServ = zonaServ;
 		this.validator = validator;
+		this.metodos = metodos;
 	}
 
 	@Transactional
@@ -161,7 +167,7 @@ public class EntrenoService {
 			en.setDesnivel(desnivelTotal);
 			en.setDistancia(distancia);
 			en.setTiempoTotal(tiempoTotalSegundos);
-			en.setFcMedia(calcularFcMediaPonderada(dto.getIntervalos()));
+			en.setFcMedia(metodos.calcularFcMediaPonderada(dto.getIntervalos()));
 			en.setFcMaxima(fcMaxima);
 
 			en.setZonaAlcanzada(zonaServ.determinarZona(zonasDelUsuario, en.getFcMedia()));
@@ -215,28 +221,6 @@ public class EntrenoService {
 		}
 
 		System.out.println("Migración completada");
-	}
-
-	private Integer calcularFcMediaPonderada(List<IntervaloInsertDTO> intervalos) {
-		double sumaFCPonderada = 0;
-		long tiempoTotalConFC = 0;
-
-		for (IntervaloInsertDTO i : intervalos) {
-			// Solo sumamos si el intervalo tiene dato de FC media
-			if (i.getFcMedia() != null && i.getFcMedia() > 0) {
-				long duracionSegundos = i.getDuracion().toSecondOfDay();
-
-				sumaFCPonderada += (i.getFcMedia() * duracionSegundos);
-				tiempoTotalConFC += duracionSegundos;
-			}
-		}
-
-		// Si ningún intervalo tenía FC, devolvemos null o 0
-		if (tiempoTotalConFC == 0)
-			return null;
-
-		// Retornamos el promedio redondeado
-		return (int) Math.round(sumaFCPonderada / tiempoTotalConFC);
 	}
 
 	public List<Entreno> obtenerTodosLosEntrenos() {
