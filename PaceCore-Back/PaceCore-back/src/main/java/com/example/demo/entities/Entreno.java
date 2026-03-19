@@ -3,6 +3,7 @@ package com.example.demo.entities;
 import java.io.Serializable;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -50,9 +51,10 @@ public class Entreno implements Serializable {
 	// bi-directional many-to-one association to Intervalo
 	// En caso de que cuando se elimine un entreno, si el entreno tiene intervalos
 	// asociados, se eliminan todos sus intervalos asociados
-	@OneToMany(mappedBy = "entreno", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	//el CascadeType.ALL sirve para que se le apliquen a los hijos de entreno todas las operaciones que se haga sobre el padre (modificar)
+	@OneToMany(mappedBy = "entreno", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private List<Intervalo> intervalos;
+	private List<Intervalo> intervalos = new ArrayList<Intervalo>();
 
 	@Column(name = "fc_media")
 	private Integer fcMedia;
