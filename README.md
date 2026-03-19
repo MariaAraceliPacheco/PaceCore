@@ -59,7 +59,8 @@ Actualmente **no hay distinción real de permisos por rol** entre “usuario nor
 
 ### 5.3 Gestión de Entrenamientos
 - ✅ CRUD completo: crear, leer, actualizar, eliminar  
-- ✅ Añadir intervalos  
+- ✅ Añadir intervalos
+- ✅ Generación inteligente de entrenamientos personalizada
 
 ### 5.4 Estadísticas y Estimaciones
 - ✅ Ritmo medio por entreno  
@@ -70,7 +71,6 @@ Actualmente **no hay distinción real de permisos por rol** entre “usuario nor
 
 ### 5.5 Perfiles de Usuario
 - ✅ Ver y actualizar perfil propio  
-- ✅ Ver perfiles y estadísticas de otros usuarios  
 
 ---
 
